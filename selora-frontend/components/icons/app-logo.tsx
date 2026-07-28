@@ -28,7 +28,7 @@ export default function AppLogo(props: Props) {
 						"font-bold text-xl md:text-2xl text-center font-mono!",
 						`${hideLogoTextOnMobile && "hidden md:block"}`,
 					)}>
-					DRD Finance
+					Selora Shop
 				</span>
 			</Activity>
 			<div className="size-7 md:size-8">

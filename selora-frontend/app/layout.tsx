@@ -10,9 +10,9 @@ import { cn } from "@/features/shared/utils";
 
 import "./globals.css";
 
-const SITE_NAME = "DRD Finance";
-const SITE_TITLE = "DRD Finance";
-const SITE_DESCRIPTION = "DRD Finance";
+const SITE_NAME = "Selora Shop";
+const SITE_TITLE = "Selora Shop";
+const SITE_DESCRIPTION = "Selora Shop";
 
 const SITE_URL = "https://finance.pouria-drd.ir";
 
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
 	title: {
 		default: SITE_NAME,
-		template: "DRD Finance | %s",
+		template: "Selora Shop | %s",
 	},
 
 	description: SITE_DESCRIPTION,
