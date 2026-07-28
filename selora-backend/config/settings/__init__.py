@@ -1,6 +1,6 @@
 from .app_config import config
 
-if config.app.stage == "production":
-    from .production import *
-else:
+if config.app.debug:
     from .development import *
+else:
+    from .production import *

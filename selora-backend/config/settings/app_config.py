@@ -24,7 +24,6 @@ class AppConfig:
     Application configuration.
     """
 
-    stage: str
     debug: bool
     secret_key: str
     base_url: str
@@ -91,7 +90,6 @@ class Config:
         """
 
         self.app = AppConfig(
-            stage=self._get_required("STAGE"),
             debug=self._get_bool("DEBUG"),
             secret_key=self._get_required("SECRET_KEY"),
             base_url=self._get_required("BASE_URL"),
