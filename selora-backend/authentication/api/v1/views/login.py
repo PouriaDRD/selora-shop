@@ -16,7 +16,6 @@ from authentication.api.v1.serializers import LoginSerializer
 
 from config.swagger import (
     BAD_REQUEST_RESPONSE,
-    UNAUTHORIZED_RESPONSE,
     THROTTLE_RESPONSE,
     SERVER_ERROR_RESPONSE,
 )
@@ -43,7 +42,6 @@ Possible errors:
             description="Login successful.",
         ),
         400: BAD_REQUEST_RESPONSE,
-        401: UNAUTHORIZED_RESPONSE,
         429: THROTTLE_RESPONSE,
         500: SERVER_ERROR_RESPONSE,
     },
