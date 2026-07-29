@@ -3,7 +3,6 @@ from user_agents import parse
 from django.db import transaction
 from rest_framework.request import Request
 
-from accounts.models import UserModel
 from accounts.repositories import UserRepository
 from authentication.repositories import LoginHistoryRepository
 
@@ -18,7 +17,7 @@ class LoginHistoryService:
 
     @staticmethod
     @transaction.atomic
-    def create_success(user: UserModel, request: Request):
+    def create_success(user, request: Request):
         """
         Create a successful login history record.
 
