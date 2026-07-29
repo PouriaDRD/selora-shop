@@ -45,13 +45,12 @@ class AuthService:
 
             return cls.auth_response(user)
 
-        except ValidationError as e:
-            logger.error(f"Failed to register user: {e}")
-            raise e
+        except ValidationError:
+            raise
 
         except Exception as e:
-            logger.error(f"Failed to register user: {e}")
-            raise ValidationError(f"Failed to register user")
+            logger.exception(e)
+            raise ValidationError("Failed to login user")
 
     @classmethod
     def login(cls, username: str, password: str, request: Request):
@@ -89,9 +88,12 @@ class AuthService:
 
             return cls.auth_response(user)
 
+        except ValidationError:
+            raise
+
         except Exception as e:
-            logger.error(f"Failed to login user: {username}: {str(e)}")
-            raise ValidationError(f"Failed to login user")
+            logger.exception(e)
+            raise ValidationError("Failed to login user")
 
     @classmethod
     def handle_failed_login(cls, username: str, request: Request, reason: str):
