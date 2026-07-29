@@ -20,6 +20,7 @@ import { cn } from "@/features/shared/utils";
 import { useLogout } from "../../hooks";
 
 interface Props {
+	collapsed?: boolean;
 	className?: string;
 	size?: VariantProps<typeof buttonVariants>["size"];
 	variant?: VariantProps<typeof buttonVariants>["variant"];
@@ -27,6 +28,7 @@ interface Props {
 
 export function LogoutDialog({
 	className,
+	collapsed = true,
 	size = "sm",
 	variant = "ghost",
 }: Props) {
@@ -44,6 +46,13 @@ export function LogoutDialog({
 							<Spinner className="size-4 shrink-0 text-destructive" />
 						) : (
 							<LogOut className="size-4 shrink-0 text-destructive" />
+						)}
+						{!collapsed && (
+							<span className="text-destructive">
+								{isLoading
+									? "در حال خروج از حساب"
+									: "خروج از حساب"}
+							</span>
 						)}
 					</Button>
 				}></AlertDialogTrigger>
