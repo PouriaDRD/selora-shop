@@ -1,8 +1,17 @@
+import uuid
 from django.db import models
 
 
 class AttributeModel(models.Model):
-    """A variant dimension, e.g. 'Color' or 'Size'."""
+    """
+    A variant dimension, e.g. 'Color' or 'Size'.
+    """
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
 
     name = models.CharField(max_length=60, unique=True)
 
@@ -16,7 +25,15 @@ class AttributeModel(models.Model):
 
 
 class AttributeValueModel(models.Model):
-    """A concrete value of an attribute, e.g. 'Red' for 'Color'."""
+    """
+    A concrete value of an attribute, e.g. 'Red' for 'Color'.
+    """
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
 
     attribute = models.ForeignKey(
         AttributeModel, on_delete=models.CASCADE, related_name="values"
