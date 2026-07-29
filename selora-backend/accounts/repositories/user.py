@@ -1,5 +1,4 @@
-from typing import Any
-
+from typing import Any, List, Dict
 from django.contrib.auth import get_user_model
 
 from accounts.enums import UserRole, UserStatus
@@ -82,8 +81,15 @@ class UserRepository:
         return User.objects.filter(username=username).exists()
 
     @staticmethod
-    def bulk_create(users):
+    def bulk_create(users_data: List[Dict[str, Any]]):
         """
-        Bulk create users.
+        Create multiple users in bulk.
+
+        Args:
+            users_data: List of user data dictionaries.
+
+        Returns:
+            List[User]: List of created user instances.
         """
+        users = [User(**data) for data in users_data]
         return User.objects.bulk_create(users)

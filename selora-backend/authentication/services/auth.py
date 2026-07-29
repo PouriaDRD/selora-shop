@@ -51,7 +51,7 @@ class AuthService:
 
         except Exception as e:
             logger.error(f"Failed to register user: {e}")
-            raise e
+            raise ValidationError(f"Failed to register user")
 
     @classmethod
     def login(cls, username: str, password: str, request: Request):
@@ -88,9 +88,10 @@ class AuthService:
             LoginHistoryService.create_success(user, request)
 
             return cls.auth_response(user)
+
         except Exception as e:
             logger.error(f"Failed to login user: {username}: {str(e)}")
-            raise e
+            raise ValidationError(f"Failed to login user")
 
     @classmethod
     def handle_failed_login(cls, username: str, request: Request, reason: str):

@@ -10,7 +10,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import GenericAPIView
 from rest_framework.throttling import ScopedRateThrottle
-
+from rest_framework.exceptions import ValidationError
+from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
@@ -79,29 +80,32 @@ class TokenRefreshAPIView(GenericAPIView):
     throttle_classes = [ScopedRateThrottle]
 
     def post(self, request: Request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
 
-        access_lifetime = cast(
-            timedelta,
-            api_settings.ACCESS_TOKEN_LIFETIME,
-        )
-        access_expires_at = timezone.now() + access_lifetime
+            access_lifetime = cast(
+                timedelta,
+                api_settings.ACCESS_TOKEN_LIFETIME,
+            )
+            access_expires_at = timezone.now() + access_lifetime
 
-        refresh_lifetime = cast(
-            timedelta,
-            api_settings.REFRESH_TOKEN_LIFETIME,
-        )
-        refresh_expires_at = timezone.now() + refresh_lifetime
+            refresh_lifetime = cast(
+                timedelta,
+                api_settings.REFRESH_TOKEN_LIFETIME,
+            )
+            refresh_expires_at = timezone.now() + refresh_lifetime
 
-        logger.info("Token refreshed successfully.")
+            logger.info("Token refreshed successfully.")
 
-        return Response(
-            data={
-                "access": serializer.validated_data["access"],
-                "access_expires_at": access_expires_at.isoformat(),
-                "refresh": serializer.validated_data["refresh"],
-                "refresh_expires_at": refresh_expires_at.isoformat(),
-            },
-            status=status.HTTP_200_OK,
-        )
+            return Response(
+                data={
+                    "access": serializer.validated_data["access"],
+                    "access_expires_at": access_expires_at.isoformat(),
+                    "refresh": serializer.validated_data["refresh"],
+                    "refresh_expires_at": refresh_expires_at.isoformat(),
+                },
+                status=status.HTTP_200_OK,
+            )
+        except TokenError:
+            raise ValidationError({"refresh": "Invalid or expired refresh token."})
