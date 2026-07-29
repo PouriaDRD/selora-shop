@@ -7,7 +7,7 @@ function robots(): MetadataRoute.Robots {
 			allow: "/",
 			disallow: ["admin", "panel", "checkout"],
 		},
-		sitemap: "https://finance.pouria-drd.ir/sitemap.xml",
+		sitemap: "https://selora.pouria-drd.ir/sitemap.xml",
 	};
 }
 

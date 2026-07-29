@@ -14,7 +14,7 @@ const SITE_NAME = "Selora Shop";
 const SITE_TITLE = "Selora Shop";
 const SITE_DESCRIPTION = "Selora Shop";
 
-const SITE_URL = "https://finance.pouria-drd.ir";
+const SITE_URL = "https://selora.pouria-drd.ir";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 

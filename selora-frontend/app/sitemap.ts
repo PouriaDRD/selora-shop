@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 function siteMap(): MetadataRoute.Sitemap {
 	return [
 		{
-			url: "https://finance.pouria-drd.ir",
-			lastModified: "07/22/2026",
+			url: "https://selora.pouria-drd.ir",
+			lastModified: "07/30/2026",
 			changeFrequency: "monthly",
 			priority: 1,
 		},
