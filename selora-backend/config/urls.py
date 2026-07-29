@@ -22,16 +22,16 @@ urlpatterns = [
     path(base_url + admin_url, admin.site.urls),
     # API v1 documentation
     path(
-        base_url + "v1/schema/",
+        "schema/",
         SpectacularAPIView.as_view(api_version="v1"),
         name="schema-v1",
     ),
     path(
-        base_url + "v1/docs/",
+        "docs/",
         SpectacularSwaggerView.as_view(url_name="schema-v1"),
     ),
     path(
-        base_url + "v1/redoc/",
+        "redoc/",
         SpectacularRedocView.as_view(url_name="schema-v1"),
         name="redoc-v1",
     ),
