@@ -17,7 +17,6 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-
 # ---------------------------------------------------------------
 # Installed Apps Configuration
 # ---------------------------------------------------------------
@@ -189,13 +188,30 @@ LOGGING = {
         },
     },
     "loggers": {
-        "django": {
-            "handlers": ["console", "info_file", "warning_file", "error_file"],
+        "root": {
+            "handlers": [
+                "console",
+                "info_file",
+                "warning_file",
+                "error_file",
+            ],
             "level": "INFO",
-            "propagate": True,
+        },
+        "django": {
+            "handlers": [
+                "console",
+                "info_file",
+                "warning_file",
+                "error_file",
+            ],
+            "level": "INFO",
+            "propagate": False,
         },
         "django.request": {
-            "handlers": ["error_file", "console"],
+            "handlers": [
+                "error_file",
+                "console",
+            ],
             "level": "ERROR",
             "propagate": False,
         },
