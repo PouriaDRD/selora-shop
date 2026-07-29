@@ -18,8 +18,8 @@ export function useRegister() {
 
 export const useMyLoginHistory = () => {
 	return useQuery({
-		queryKey: queryKeys.auth.myLoginHistory,
-		queryFn: authApi.myLoginHistory,
+		queryKey: queryKeys.auth.history,
+		queryFn: authApi.history,
 		// auto refresh every 120 seconds
 		refetchInterval: 120 * 1000,
 	});

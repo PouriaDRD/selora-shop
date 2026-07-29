@@ -7,6 +7,7 @@ import { apiClient, endpoints } from "@/features/api/lib";
 
 import {
 	LoginFormValues,
+	LoginHistory,
 	LoginResponse,
 	RegisterFormValues,
 	RegisterResponse,
@@ -19,5 +20,9 @@ export const authApi = {
 
 	register: (data: RegisterFormValues) => {
 		return apiClient.post<RegisterResponse>(endpoints.auth.register, data);
+	},
+
+	history: () => {
+		return apiClient.get<LoginHistory[]>(endpoints.auth.history);
 	},
 };
