@@ -62,7 +62,7 @@ class LoginHistoryService:
                 f"Failed to create successful login history for user {user.username}: {str(e)}",
                 exc_info=True,
             )
-            raise e
+            raise
 
     @staticmethod
     @transaction.atomic
@@ -116,7 +116,7 @@ class LoginHistoryService:
                 f"Failed to create failed login history for user {username}: {str(e)}",
                 exc_info=True,
             )
-            raise e
+            raise
 
     @staticmethod
     def get_login_info(request: Request):

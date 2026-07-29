@@ -79,11 +79,15 @@ class RegisterSerializer(serializers.Serializer):
         username = validated_data["username"]
         password = validated_data["password"]
         request = self.context.get("request")
+        first_name = validated_data.get("first_name")
+        last_name = validated_data.get("last_name")
 
         result = AuthService.register(
             username=username,
             password=password,
             request=request,  # type: ignore
+            first_name=first_name,
+            last_name=last_name,
         )
 
         return result

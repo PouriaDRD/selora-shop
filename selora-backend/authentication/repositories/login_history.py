@@ -1,5 +1,4 @@
 from typing import Optional
-from django.db import transaction
 from django.db.models import QuerySet
 
 from authentication.models import LoginHistoryModel
@@ -12,7 +11,6 @@ class LoginHistoryRepository:
     """
 
     @staticmethod
-    @transaction.atomic
     def create(**data) -> LoginHistoryModel:
 
         return LoginHistoryModel.objects.create(**data)

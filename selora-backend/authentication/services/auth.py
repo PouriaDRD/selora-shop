@@ -19,7 +19,7 @@ class AuthService:
     """
 
     @classmethod
-    def register(cls, username: str, password: str, request: Request):
+    def register(cls, username: str, password: str, request: Request, **extra_fields):
         """
         Register user with username and password.
 
@@ -37,7 +37,9 @@ class AuthService:
         username = cls.normalize_username(username)
 
         try:
-            user = UserService.create_user(username=username, password=password)
+            user = UserService.create_user(
+                username=username, password=password, **extra_fields
+            )
 
             LoginHistoryService.create_success(user, request)
 
