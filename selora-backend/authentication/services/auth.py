@@ -65,24 +65,30 @@ class AuthService:
             Authentication response.
 
         Raises:
-            WrongEmailOrPasswordError: If username or password is invalid.
+            ValidationError: If username or password is invalid.
         """
         username = cls.normalize_username(username)
 
-        user = authenticate(
-            request=request, username=username, password=password  # type: ignore
-        )
-
-        if not user:
-            cls.handle_failed_login(
-                username=username,
-                request=request,
-                reason="نام کاربری یا رمز عبور اشتباه است.",
+        try:
+            user = authenticate(
+                request=request, username=username, password=password  # type: ignore
             )
 
-            raise ValidationError("Invalid username or password.")
+            if not user:
+                cls.handle_failed_login(
+                    username=username,
+                    request=request,
+                    reason="نام کاربری یا رمز عبور اشتباه است.",
+                )
 
-        return cls.auth_response(user)
+                raise ValidationError("Invalid username or password.")
+
+            LoginHistoryService.create_success(user, request)
+
+            return cls.auth_response(user)
+        except Exception as e:
+            logger.error(f"Failed to login user: {username}: {str(e)}")
+            raise e
 
     @classmethod
     def handle_failed_login(cls, username: str, request: Request, reason: str):
