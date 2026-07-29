@@ -3,7 +3,12 @@
 import { Button, FieldGroup, Spinner } from "@/components/ui";
 
 import { useRegisterForm } from "../../hooks";
-import { ConfirmPasswordField, PasswordField, UsernameField } from "../fields";
+import {
+	ConfirmPasswordField,
+	NameField,
+	PasswordField,
+	UsernameField,
+} from "../fields";
 
 interface Props {
 	onSuccess?: () => void;
@@ -20,11 +25,26 @@ function RegisterForm({ onSuccess }: Props) {
 		<form id="register-form" onSubmit={submit}>
 			<FieldGroup>
 				{/* Username*/}
-				{/* Username Name */}
 				<UsernameField
 					control={form.control}
 					name="username"
 					label="نام کاربری"
+				/>
+
+				{/* First Name */}
+				<NameField
+					key={"first_name"}
+					control={form.control}
+					name="first_name"
+					label="نام(اختیاری)"
+				/>
+
+				{/* Last Name */}
+				<NameField
+					key={"last_name"}
+					control={form.control}
+					name="last_name"
+					label="نام خانوادگی(اختیاری)"
 				/>
 
 				{/* Password */}

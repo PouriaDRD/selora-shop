@@ -33,6 +33,8 @@ export function useRegisterForm({ onSuccess }: Props) {
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
 			username: registerStore.username,
+			first_name: registerStore.first_name,
+			last_name: registerStore.last_name,
 			password: "",
 			confirm_password: "",
 		},
@@ -89,6 +91,8 @@ export function useRegisterForm({ onSuccess }: Props) {
 		const subscription = form.watch((values) => {
 			registerStore.set({
 				username: values.username,
+				first_name: values.first_name,
+				last_name: values.last_name,
 				password: values.password,
 				confirm_password: values.confirm_password,
 			});
@@ -103,6 +107,8 @@ export function useRegisterForm({ onSuccess }: Props) {
 	const onHasHydrated = useEffectEvent(() => {
 		form.reset({
 			username: registerStore.username,
+			first_name: registerStore.first_name,
+			last_name: registerStore.last_name,
 			password: "",
 			confirm_password: "",
 		});

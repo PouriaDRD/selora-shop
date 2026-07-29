@@ -13,6 +13,8 @@ class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField(
         required=True,
         write_only=True,
+        min_length=3,
+        max_length=150,
         error_messages={
             "required": "username is required",
             "blank": "username can not be blank",
