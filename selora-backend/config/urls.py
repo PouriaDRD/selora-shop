@@ -3,6 +3,11 @@ from django.conf import settings
 from rest_framework import routers
 from django.urls import path, include
 from django.conf.urls.static import static
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 from config.settings.app_config import config
 
@@ -15,8 +20,20 @@ urlpatterns = [
     path(base_url, include(router.urls)),
     # Admin URL without base_url
     path(base_url + admin_url, admin.site.urls),
-    # API v1 routes
-    # path(base_url + "accounts/", include("accounts.api.urls"))
+    # API documentation
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
+    # API routes
+    path(base_url + "accounts/", include("accounts.api.urls")),
 ]
 
 

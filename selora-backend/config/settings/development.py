@@ -43,6 +43,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # Django REST Framework Configuration
 # ---------------------------------------------------------------
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_RENDERER_CLASSES": [
         "config.renderers.ApiRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
@@ -68,4 +69,11 @@ REST_FRAMEWORK = {
         "refresh-token": "5/minute",
     },
     "EXCEPTION_HANDLER": "config.exception_handler.custom_exception_handler",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Selora Shop API",
+    "DESCRIPTION": "Selora Shop API Documentation",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }

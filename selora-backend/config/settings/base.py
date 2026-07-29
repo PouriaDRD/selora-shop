@@ -38,6 +38,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "django_filters",
     "django_cleanup.apps.CleanupSelectedConfig",
+    "drf_spectacular",
 ]
 
 LOCAL_APPS = [
