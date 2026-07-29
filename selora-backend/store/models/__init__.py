@@ -1,6 +1,7 @@
 from .attribute import AttributeModel, AttributeValueModel
 from .category import CategoryModel
 from .product import ProductModel, ProductImageModel
+from .variant import ProductVariantModel, VariantImageModel
 
 __all__ = [
     "AttributeModel",
@@ -8,4 +9,6 @@ __all__ = [
     "CategoryModel",
     "ProductModel",
     "ProductImageModel",
+    "ProductVariantModel",
+    "VariantImageModel",
 ]
