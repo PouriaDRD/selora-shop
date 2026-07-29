@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import ScopedRateThrottle
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 
-from accounts.api.serializers import UserSerializer
+from ..serializers import UserSerializer
 
 User = get_user_model()
 

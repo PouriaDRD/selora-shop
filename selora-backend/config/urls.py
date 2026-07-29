@@ -20,20 +20,23 @@ urlpatterns = [
     path(base_url, include(router.urls)),
     # Admin URL without base_url
     path(base_url + admin_url, admin.site.urls),
-    # API documentation
-    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # API v1 documentation
     path(
-        "api/docs/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
-        name="swagger-ui",
+        base_url + "v1/schema/",
+        SpectacularAPIView.as_view(api_version="v1"),
+        name="schema-v1",
     ),
     path(
-        "api/redoc/",
-        SpectacularRedocView.as_view(url_name="schema"),
-        name="redoc",
+        base_url + "v1/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema-v1"),
     ),
-    # API routes
-    path(base_url + "accounts/", include("accounts.api.urls")),
+    path(
+        base_url + "v1/redoc/",
+        SpectacularRedocView.as_view(url_name="schema-v1"),
+        name="redoc-v1",
+    ),
+    # API v1 routes
+    path(base_url + "v1/accounts/", include("accounts.api.v1.urls")),
 ]
 
 

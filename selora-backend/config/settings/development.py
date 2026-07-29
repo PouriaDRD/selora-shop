@@ -68,6 +68,11 @@ REST_FRAMEWORK = {
         "register": "5/minute",
         "refresh-token": "5/minute",
     },
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
+    "DEFAULT_VERSION": "v1",
+    "ALLOWED_VERSIONS": [
+        "v1",
+    ],
     "EXCEPTION_HANDLER": "config.exception_handler.custom_exception_handler",
 }
 
