@@ -1,0 +1,72 @@
+"use client";
+
+import Link from "next/link";
+
+import { AppIcon } from "@/components/icons";
+import { PageLayout } from "@/components/layouts";
+import { Button } from "@/components/ui";
+import { LoginCard } from "@/features/auth/components/cards";
+import { GridShape } from "@/features/shared/components";
+import { useUser } from "@/features/user/context";
+
+function LoginPage() {
+	const { user, isLoading } = useUser();
+
+	if (isLoading) {
+		return (
+			<PageLayout className="flex items-center justify-center relative">
+				<GridShape />
+				<p
+					suppressHydrationWarning
+					className="text-sm text-muted-foreground">
+					در حال بارگذاری...
+				</p>
+			</PageLayout>
+		);
+	}
+
+	/**
+	 * If user is already authenticated,
+	 * redirect them away from register page.
+	 */
+	if (user) {
+		return (
+			<PageLayout className="flex items-center justify-center relative">
+				<GridShape />
+				<AlreadyLoggedIn />
+			</PageLayout>
+		);
+	}
+
+	return (
+		<PageLayout className="flex items-center justify-center relative">
+			<GridShape />
+			<LoginCard />
+		</PageLayout>
+	);
+}
+
+export default LoginPage;
+
+/**
+ * UI shown when user is already authenticated.
+ */
+function AlreadyLoggedIn() {
+	return (
+		<div className="flex flex-col items-center gap-4 text-center bg-card shadow-lg p-6 rounded-2xl">
+			<AppIcon />
+
+			<p
+				suppressHydrationWarning
+				className="text-sm text-muted-foreground">
+				شما قبلاً وارد شده‌اید و نیازی به ورود ندارید.
+			</p>
+
+			<Link href="/">
+				<Button variant={"ghost"} size={"sm"}>
+					بازگشت به صفحه اصلی
+				</Button>
+			</Link>
+		</div>
+	);
+}

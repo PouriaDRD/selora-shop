@@ -27,11 +27,12 @@ export function UsernameField<T extends FieldValues>(props: Props<T>) {
 					<Input
 						{...field}
 						autoFocus
+						dir="ltr"
 						type="username"
 						autoComplete="username"
 						id="form-username"
 						aria-invalid={fieldState.invalid}
-						placeholder="my_username"
+						placeholder="نام کاربری"
 						className="placeholder:text-right"
 					/>
 					{fieldState.invalid && (

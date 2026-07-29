@@ -60,7 +60,7 @@ export function useLoginForm({ onSuccess }: Props) {
 
 		onSuccess?.();
 
-		const redirectTo = next ?? "/panel/dashboard";
+		const redirectTo = next ?? "/";
 		router.push(redirectTo as "/");
 	};
 

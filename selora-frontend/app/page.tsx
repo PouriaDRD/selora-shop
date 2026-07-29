@@ -1,3 +1,5 @@
+"use client";
+
 import { AppIcon } from "@/components/icons";
 import {
 	Card,
@@ -6,10 +8,14 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui";
+import { LogoutDialog } from "@/features/auth/components/dialogs";
 import { ThemeSwitcher } from "@/features/preferences/components";
 import { GridShape } from "@/features/shared/components";
+import { useUser } from "@/features/user/context";
 
 export default function LandingPage() {
+	const { user } = useUser();
+
 	return (
 		<main
 			className={`relative flex min-h-dvh flex-col items-center 
@@ -17,7 +23,7 @@ export default function LandingPage() {
 			dir="rtl">
 			<GridShape />
 
-			<Card className="w-full max-w-xs">
+			<Card className="w-full max-w-xs shadow-lg">
 				<CardHeader className="flex flex-col items-center justify-center gap-2">
 					<AppIcon />
 					<CardTitle suppressHydrationWarning>Selora Shop</CardTitle>
@@ -27,8 +33,16 @@ export default function LandingPage() {
 					</CardDescription>
 				</CardHeader>
 
-				<CardContent>
+				<CardContent className="space-x-4">
 					<ThemeSwitcher />
+
+					{user && (
+						<LogoutDialog
+							size={"sm"}
+							variant={"outline"}
+							className="size-8"
+						/>
+					)}
 				</CardContent>
 			</Card>
 		</main>

@@ -6,6 +6,6 @@ export const endpoints = {
 	},
 
 	account: {
-		profile: "accounts/me/",
+		profile: "accounts/profile/",
 	},
 };

@@ -60,7 +60,7 @@ export function useRegisterForm({ onSuccess }: Props) {
 
 		onSuccess?.();
 
-		const redirectTo = next ?? "/panel/dashboard";
+		const redirectTo = next ?? "/";
 
 		router.push(redirectTo as "/");
 	};
@@ -69,14 +69,14 @@ export function useRegisterForm({ onSuccess }: Props) {
 		registerMutation.mutate(values, {
 			onSuccess: async (res) => {
 				if (!res.status) {
-					toast.error(res.message || "خطا در ثبت نام");
+					toast.error("نام کاربری تکراری است!");
 					return;
 				}
 
 				await handleOnSuccess(res.data);
 			},
 			onError: () => {
-				toast.error("خطا در ثبت نام");
+				toast.error("خطا ناخواسته در ثبت نام");
 			},
 		});
 	});
