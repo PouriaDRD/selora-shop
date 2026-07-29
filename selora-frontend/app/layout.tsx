@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 
+import { Header } from "@/components/layouts";
 import { QCProvider } from "@/features/api/contexts";
 import { ThemeProvider } from "@/features/preferences/contexts";
 import { AppToaster } from "@/features/shared/contexts";
@@ -146,7 +147,12 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 						enableSystem
 						disableTransitionOnChange>
 						<AppToaster />
-						<UserProvider>{children}</UserProvider>
+						<UserProvider>
+							<div className="flex flex-col overflow-hidden w-full h-dvh">
+								<Header />
+								{children}
+							</div>
+						</UserProvider>
 					</ThemeProvider>
 				</QCProvider>
 			</body>
