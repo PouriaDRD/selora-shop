@@ -99,7 +99,13 @@ If needed, adjust the values for your local setup.
 python manage.py migrate
 ```
 
-5. Start the development server:
+5. Create a superuser:
+
+```bash
+python manage.py createsuperuser
+```
+
+6. Start the development server:
 
 ```bash
 python manage.py runserver
@@ -126,7 +132,7 @@ Typical endpoints include:
 Run the test suite with:
 
 ```bash
-pytest
+python manage.py test
 ```
 
 ## Useful Commands
