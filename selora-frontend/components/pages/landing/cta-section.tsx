@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-export default function CtaSection() {
+export function CtaSection() {
 	return (
 		<section>
 			<div className="rounded-2xl bg-linear-to-l from-primary to-purple-600 p-8 text-center text-white shadow-xl md:p-12">

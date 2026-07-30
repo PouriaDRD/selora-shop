@@ -3,8 +3,11 @@
 import { Fragment } from "react/jsx-runtime";
 
 import { Footer, Header } from "@/components/layouts";
-import { FeaturesSection, HeroSection } from "@/components/pages/landing";
-import CtaSection from "@/components/pages/landing/cta-section";
+import {
+	CtaSection,
+	FeaturesSection,
+	HeroSection,
+} from "@/components/pages/landing";
 
 export default function LandingPage() {
 	return (
