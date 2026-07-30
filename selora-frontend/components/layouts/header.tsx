@@ -25,6 +25,7 @@ export function Header() {
 
 			<div className="hidden items-center gap-8 md:flex">
 				<Link
+					suppressHydrationWarning
 					href="/#products"
 					className="text-sm font-medium text-muted-foreground">
 					محصولات
@@ -32,12 +33,14 @@ export function Header() {
 
 				<Link
 					href="#"
+					suppressHydrationWarning
 					className="text-sm font-medium text-muted-foreground">
 					درباره ما
 				</Link>
 
 				<Link
 					href="#"
+					suppressHydrationWarning
 					className="text-sm font-medium text-muted-foreground">
 					تماس
 				</Link>

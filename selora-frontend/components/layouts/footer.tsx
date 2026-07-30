@@ -14,20 +14,28 @@ export function Footer() {
 				<div className="flex flex-col items-center justify-between gap-4 md:flex-row">
 					<div className="flex items-center gap-2">
 						<AppIcon />
-						<span className="text-sm font-semibold">سلورا</span>
+						<span
+							className="text-sm font-semibold"
+							suppressHydrationWarning>
+							سلورا
+						</span>
 					</div>
-					<p className="text-sm text-muted-foreground">
+					<p
+						className="text-sm text-muted-foreground"
+						suppressHydrationWarning>
 						© {year} سلورا شاپ. تمامی حقوق محفوظ است.
 					</p>
 					<div className="flex gap-6">
 						<Link
 							href="#"
-							className="text-sm text-muted-foreground">
+							className="text-sm text-muted-foreground"
+							suppressHydrationWarning>
 							حریم خصوصی
 						</Link>
 						<Link
 							href="#"
-							className="text-sm text-muted-foreground">
+							className="text-sm text-muted-foreground"
+							suppressHydrationWarning>
 							شرایط استفاده
 						</Link>
 					</div>

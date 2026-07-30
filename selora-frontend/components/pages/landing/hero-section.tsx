@@ -15,23 +15,33 @@ export function HeroSection() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5 }}
 					className="flex flex-col items-center justify-center w-full gap-6">
-					<h1 className=" text-center text-4xl font-bold leading-tight text-primary md:text-5xl">
+					<h1
+						className=" text-center text-4xl font-bold leading-tight text-primary md:text-5xl"
+						suppressHydrationWarning>
 						سلورا
 						<br />
-						<span className="text-foreground">
+						<span
+							className="text-foreground"
+							suppressHydrationWarning>
 							بگرد، ببین و خرید کن
 						</span>
 					</h1>
 
 					<div className="flex flex-row-reverse gap-4">
 						<Link href="/#products">
-							<Button size={"lg"} variant={"default"}>
+							<Button
+								size={"lg"}
+								variant={"default"}
+								suppressHydrationWarning>
 								مشاهده محصولات
 							</Button>
 						</Link>
 
 						<Link href="/">
-							<Button size={"lg"} variant={"secondary"}>
+							<Button
+								size={"lg"}
+								variant={"secondary"}
+								suppressHydrationWarning>
 								بیشتر بدانید
 							</Button>
 						</Link>

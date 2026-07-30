@@ -44,10 +44,12 @@ export function FeaturesSection() {
 	return (
 		<section className="w-full">
 			<div className="mb-12 text-center">
-				<h2 className="text-3xl font-bold">
+				<h2 className="text-3xl font-bold" suppressHydrationWarning>
 					چرا سلورا را انتخاب کنید؟
 				</h2>
-				<p className="mt-4 text-muted-foreground">
+				<p
+					className="mt-4 text-muted-foreground"
+					suppressHydrationWarning>
 					تجربه خریدی متفاوت با خدمات برتر ما.
 				</p>
 			</div>
@@ -83,10 +85,12 @@ function Feature({ idx, Icon, title, desc }: FeatureProps) {
 			<Card className="h-full border-0 shadow-lg backdrop-blur-sm transition hover:scale-105 hover:shadow-xl">
 				<CardHeader>
 					<Icon className="h-12 w-12 text-primary" />
-					<CardTitle>{title}</CardTitle>
+					<CardTitle suppressHydrationWarning>{title}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<CardDescription className="text-muted-foreground">
+					<CardDescription
+						className="text-muted-foreground"
+						suppressHydrationWarning>
 						{desc}
 					</CardDescription>
 				</CardContent>
