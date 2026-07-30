@@ -14,7 +14,7 @@ from store.api.v1.serializers import ProductDetailSerializer, ProductListSeriali
 
 
 @extend_schema(
-    tags=["Store - Products"],
+    tags=["Store"],
     summary="List products",
     description="""
 Retrieve all available products.
@@ -62,7 +62,7 @@ class ProductListAPIView(ListAPIView):
 
 
 @extend_schema(
-    tags=["Store - Products"],
+    tags=["Store"],
     summary="Retrieve product details",
     description="""
 Retrieve detailed information about a specific product.

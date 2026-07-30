@@ -19,7 +19,7 @@ from config.swagger import (
 
 
 @extend_schema(
-    tags=["Store - Categories"],
+    tags=["Store"],
     summary="List categories",
     description="""
 Retrieve all available product categories.
@@ -67,7 +67,7 @@ class CategoryListAPIView(ListAPIView):
 
 
 @extend_schema(
-    tags=["Store - Categories"],
+    tags=["Store"],
     summary="Retrieve category details",
     description="""
 Retrieve detailed information about a specific category.
