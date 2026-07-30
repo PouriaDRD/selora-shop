@@ -124,6 +124,20 @@ The frontend expects the Selora backend to be running and reachable at the confi
 http://127.0.0.1:8000/api/v1/
 ```
 
+## Environment Variables
+
+Create a `.env.local` file in the frontend folder and set the values you need:
+
+```env
+BASE_API_URL="http://127.0.0.1:8000/api/v1/"
+NEXT_PUBLIC_BASE_API_URL="http://127.0.0.1:8000/api/v1/"
+```
+
+### Variables
+
+- `BASE_API_URL`: base URL used by internal server-side configuration.
+- `NEXT_PUBLIC_BASE_API_URL`: public API URL exposed to the browser and used by client-side requests.
+
 ## Notes
 
 - The app uses a standalone Next.js output configuration.

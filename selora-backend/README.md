@@ -117,6 +117,34 @@ The API will be available at:
 http://127.0.0.1:8000/
 ```
 
+## Environment Variables
+
+Create a `.env` file in the backend folder using the example file as a starting point:
+
+```bash
+copy .env.example .env
+```
+
+Common variables include:
+
+```env
+DEBUG="True"
+SECRET_KEY="your-secret-key"
+USE_SQLITE="True"
+ALLOWED_HOSTS="localhost,127.0.0.1"
+CORS_ALLOWED_ORIGINS="http://localhost:3000,http://127.0.0.1:3000"
+CSRF_TRUSTED_ORIGINS="http://localhost:3000,http://127.0.0.1:3000"
+```
+
+### Key variables
+
+- `DEBUG`: enables or disables Django debug mode.
+- `SECRET_KEY`: secret key used by Django.
+- `USE_SQLITE`: switches the project to SQLite for local development.
+- `ALLOWED_HOSTS`: comma-separated hosts allowed to serve the API.
+- `CORS_ALLOWED_ORIGINS`: frontend origins allowed to call the backend.
+- `CSRF_TRUSTED_ORIGINS`: trusted origins for CSRF protection.
+
 ## API Documentation
 
 Swagger and schema endpoints are available through the configured API documentation setup.
