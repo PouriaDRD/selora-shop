@@ -70,8 +70,9 @@ class CartItemAdmin(admin.ModelAdmin):
     search_fields = (
         "id",
         "cart__session_key",
-        "cart__user__username",
-        "cart__user__phone_number",
+        "user__username",
+        "user__first_name",
+        "user__last_name",
         "variant__sku",
         "variant__product__name",
     )

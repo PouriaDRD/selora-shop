@@ -32,7 +32,6 @@ class CartAdmin(admin.ModelAdmin):
         "user__username",
         "user__first_name",
         "user__last_name",
-        "user__phone_number",
     )
 
     list_filter = (
