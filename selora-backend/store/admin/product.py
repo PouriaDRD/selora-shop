@@ -1,11 +1,5 @@
 from django.contrib import admin
-from django.db.models import (
-    Exists,
-    OuterRef,
-    Case,
-    When,
-    F,
-)
+from django.db.models import Exists, OuterRef
 
 from store.models import (
     ProductModel,
@@ -30,6 +24,10 @@ class ProductAdmin(admin.ModelAdmin):
         "is_active",
         "created_at",
     ]
+
+    prepopulated_fields = {
+        "slug": ("name",),
+    }
 
     list_filter = [
         "is_active",

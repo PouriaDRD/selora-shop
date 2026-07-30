@@ -95,7 +95,7 @@ class CategoryRepository:
                 Prefetch(
                     "images",
                     queryset=ProductImageModel.objects.filter(is_main=True),
-                    to_attr="main_image_list",
+                    to_attr="prefetched_main_images",
                 )
             )
         )
