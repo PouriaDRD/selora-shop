@@ -12,7 +12,7 @@ from .attribute import AttributeValueModel
 
 class ProductVariantModel(models.Model):
     """
-    A purchasable combination of attribute values for a product (e.g. Red / M).
+    A purchasable combination of attribute values for a product.
     """
 
     id = models.UUIDField(
@@ -21,9 +21,10 @@ class ProductVariantModel(models.Model):
         editable=False,
     )
 
-    # The SKU is a unique identifier for a product variant.
-    # It is used to identify the product variant in the database.
-    sku = models.CharField(max_length=64, unique=True)
+    sku = models.CharField(
+        max_length=64,
+        unique=True,
+    )
 
     product = models.ForeignKey(
         ProductModel,
@@ -40,24 +41,22 @@ class ProductVariantModel(models.Model):
     price_override = models.PositiveBigIntegerField(
         null=True,
         blank=True,
-        help_text="Leave blank to use the product's base price.",
     )
 
-    is_active = models.BooleanField(default=True)
-    stock = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+    stock = models.PositiveIntegerField(
+        default=0,
+    )
 
     updated_at = models.DateTimeField(auto_now=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ["-created_at"]
-
-        verbose_name = "Product Variant"
-        verbose_name_plural = "Product Variants"
-
     def __str__(self):
-        options = ", ".join(str(v) for v in self.attribute_values.all())
-        return f"{self.product.name} ({options or 'default'})"
+        return self.label
 
     @property
     def price(self):
@@ -69,30 +68,9 @@ class ProductVariantModel(models.Model):
 
     @property
     def label(self):
-        """Human readable option label, e.g. 'Red / M'."""
         values = self.attribute_values.all().order_by("attribute__name")
-        return " / ".join(v.value for v in values) if values else "Default"
 
-    def clean(self):
-        # Prevent two variants of the same product sharing the exact same
-        # set of attribute values (enforced at the form/admin level too,
-        # since M2M validation needs the instance to already be saved).
-        if self.pk:
-            sibling_ids = self.product.variants.exclude(pk=self.pk).values_list(  # type: ignore
-                "id", flat=True
-            )
-            my_values = set(self.attribute_values.values_list("id", flat=True))
-            for sibling_id in sibling_ids:
-                sibling_values = set(
-                    ProductVariantModel.objects.get(
-                        pk=sibling_id
-                    ).attribute_values.values_list("id", flat=True)
-                )
-                if sibling_values == my_values:
-                    raise ValidationError(
-                        "Another variant of this product already uses this exact "
-                        "combination of options."
-                    )
+        return " / ".join(value.value for value in values)
 
 
 def variant_image_upload_path(instance, filename):
