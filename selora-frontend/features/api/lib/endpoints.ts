@@ -9,4 +9,11 @@ export const endpoints = {
 	account: {
 		profile: "accounts/profile/",
 	},
+
+	store: {
+		categories: "store/categories/",
+		categoryDetails: "store/categories-detail/",
+		products: "store/products/",
+		productDetails: (slug: string) => `store/products/${slug}/`,
+	},
 };
