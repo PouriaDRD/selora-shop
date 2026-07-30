@@ -40,6 +40,7 @@ class ProductListSerializer(serializers.ModelSerializer):
             "base_price",
             "main_image",
             "in_stock",
+            "created_at",
         )
 
     def get_main_image(self, obj):
