@@ -11,6 +11,11 @@ export const queryKeys = {
 		categories: ["store", "categories"],
 		categoryDetails: ["store", "categories", "details"],
 		products: ["store", "products"],
-		productDetails: ["store", "products", "details"],
+		productDetails: (slug: string) => [
+			"store",
+			"products",
+			"details",
+			slug,
+		],
 	},
 };

@@ -4,8 +4,8 @@ import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
 	return {
-		title: "Dashboard",
-		description: "Dashboard of Finance Manager",
+		title: "داشبورد",
+		description: "داشبورد سلورا",
 	};
 }
 

@@ -35,7 +35,7 @@ export function useGetProducts() {
 
 export function useGetProductDetails(slug: string) {
 	return useQuery({
-		queryKey: queryKeys.store.productDetails,
+		queryKey: queryKeys.store.productDetails(slug),
 		queryFn: () => storeApi.productDetails(slug),
 		// auto refresh every 120 seconds
 		refetchInterval: 120 * 1000,

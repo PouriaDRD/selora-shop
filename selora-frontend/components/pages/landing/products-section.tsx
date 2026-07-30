@@ -56,12 +56,15 @@ function CategoryProducts({ category }: { category: CategoryDetail }) {
 
 function ProductCard({ product }: { product: Product }) {
 	return (
-		<Link href={`/product/${product.slug}`}>
+		<Link href={`/products/${product.slug}`}>
 			<article className="group overflow-hidden rounded-xl border bg-card transition hover:shadow-md">
 				<div className="relative aspect-square overflow-hidden bg-muted">
 					{product.main_image?.image ? (
 						<Image
-							src={product.main_image.image}
+							src={
+								product.main_image.image ||
+								"/images/product-fallback.png"
+							}
 							alt={product.main_image.alt_text || product.name}
 							fill
 							priority
@@ -70,9 +73,15 @@ function ProductCard({ product }: { product: Product }) {
 							sizes="(max-width: 768px) 100vw, 33vw"
 						/>
 					) : (
-						<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-							بدون تصویر
-						</div>
+						<Image
+							src={"/images/product-fallback.png"}
+							alt={product.name}
+							fill
+							priority
+							unoptimized
+							className="object-cover"
+							sizes="(max-width:1024px)100vw,50vw"
+						/>
 					)}
 				</div>
 
