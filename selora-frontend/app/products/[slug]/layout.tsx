@@ -26,7 +26,7 @@ export default async function ProductLayout({ children }: ProductLayoutProps) {
 	return (
 		<Fragment>
 			<Header />
-			<main className="mx-auto container max-w-7xl px-4 space-y-16 pt-12">
+			<main className="mx-auto container max-w-7xl px-4 space-y-16 pt-12 flex-1">
 				{children}
 			</main>
 			<Footer />

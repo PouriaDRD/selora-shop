@@ -18,4 +18,8 @@ export const queryKeys = {
 			slug,
 		],
 	},
+
+	cart: {
+		cart: ["cart", "cart"],
+	},
 };

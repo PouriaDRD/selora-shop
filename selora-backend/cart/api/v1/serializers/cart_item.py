@@ -15,6 +15,11 @@ class CartItemSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+    variant_id = serializers.UUIDField(
+        source="variant.id",
+        read_only=True,
+    )
+
     price = serializers.IntegerField(
         source="variant.price",
         read_only=True,
@@ -29,6 +34,7 @@ class CartItemSerializer(serializers.ModelSerializer):
             "id",
             "product_name",
             "variant_label",
+            "variant_id",
             "price",
             "quantity",
             "subtotal",
@@ -40,6 +46,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class CartAddItemSerializer(serializers.Serializer):
+    cart_session_key = serializers.CharField(max_length=64)
 
     variant_id = serializers.UUIDField()
 

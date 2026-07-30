@@ -5,11 +5,6 @@ from cart.models import (
     CartItemModel,
 )
 
-from store.models import (
-    ProductVariantModel,
-    VariantImageModel,
-)
-
 
 class CartRepository:
     """Database operations for cart."""
@@ -59,18 +54,19 @@ class CartRepository:
         )
 
     @staticmethod
-    def create(*, user=None):
+    def create(*, user=None, session_key=None):
 
         return CartModel.objects.create(
             user=user,
+            # session_key=session_key,
         )
 
     @staticmethod
-    def get_item(
-        *,
-        cart,
-        variant,
-    ):
+    def get_item(item_id):
+        return CartItemModel.objects.get(id=item_id)
+
+    @staticmethod
+    def get_item_variant(*, cart, variant):
 
         return (
             CartItemModel.objects.select_related(
@@ -85,12 +81,7 @@ class CartRepository:
         )
 
     @staticmethod
-    def create_item(
-        *,
-        cart,
-        variant,
-        quantity,
-    ):
+    def create_item(*, cart, variant, quantity):
 
         return CartItemModel.objects.create(
             cart=cart,
@@ -99,10 +90,7 @@ class CartRepository:
         )
 
     @staticmethod
-    def update_item_quantity(
-        item,
-        quantity,
-    ):
+    def update_item_quantity(item, quantity):
 
         item.quantity = quantity
 

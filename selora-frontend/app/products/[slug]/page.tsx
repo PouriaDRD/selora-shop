@@ -19,7 +19,7 @@ export default function ProductDetailPage() {
 
 	if (isError || !data?.status) {
 		return (
-			<div className="py-20 text-center text-sm text-muted-foreground">
+			<div className="py-20 text-center text-sm text-muted-foreground flex-1 h-full">
 				خطا در دریافت اطلاعات محصول
 			</div>
 		);
@@ -28,13 +28,13 @@ export default function ProductDetailPage() {
 	const product = data.data;
 
 	return (
-		<section className="space-y-10">
+		<main className="space-y-10 flex-1">
 			<div className="grid gap-8 lg:grid-cols-2">
 				<ProductInfo product={product} />
 
 				<ProductGallery product={product} />
 			</div>
-		</section>
+		</main>
 	);
 }
 

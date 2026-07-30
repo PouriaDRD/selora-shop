@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 
-import { ShoppingCart } from "lucide-react";
-
+import { ShoppingCartAction } from "@/features/cart/components";
 import { ThemeSwitcher } from "@/features/preferences/components";
 import { QuickActionsPopover } from "@/features/user/components/popovers";
 import { useUser } from "@/features/user/context";
@@ -48,13 +47,13 @@ export function Header() {
 
 			<div className="flex items-center gap-2">
 				<ThemeSwitcher />
-				<Button variant={"outline"} size={"icon-sm"}>
-					<ShoppingCart />
-				</Button>
+				<ShoppingCartAction />
 				{isAuthenticated ? (
 					<QuickActionsPopover />
 				) : (
-					<Button>شروع کنید</Button>
+					<Link href="/auth/login">
+						<Button>شروع کنید</Button>
+					</Link>
 				)}
 			</div>
 		</header>

@@ -17,11 +17,7 @@ class CartService:
 
     @staticmethod
     @transaction.atomic
-    def get_or_create_cart(
-        *,
-        user=None,
-        session_key=None,
-    ):
+    def get_or_create_cart(*, user=None, session_key=None):
 
         cart = None
 
@@ -34,20 +30,20 @@ class CartService:
         if not cart:
             cart = CartRepository.create(
                 user=user,
+                # session_key=session_key,
             )
 
             cart = CartRepository.get_by_user(user)
+
+        if user and not cart.user:  # type: ignore
+            cart.user = user  # type: ignore
+            cart.save()  # type: ignore
 
         return cart
 
     @staticmethod
     @transaction.atomic
-    def add_item(
-        *,
-        cart: CartModel,
-        variant: ProductVariantModel,
-        quantity: int,
-    ):
+    def add_item(*, cart: CartModel, variant: ProductVariantModel, quantity: int):
 
         if not variant.is_active:
             raise ValidationError("The variant is not active.")
@@ -55,7 +51,7 @@ class CartService:
         if variant.stock < quantity:
             raise ValidationError("The variant is out of stock.")
 
-        item = CartRepository.get_item(
+        item = CartRepository.get_item_variant(
             cart=cart,
             variant=variant,
         )
@@ -80,11 +76,8 @@ class CartService:
 
     @staticmethod
     @transaction.atomic
-    def update_quantity(
-        *,
-        item,
-        quantity: int,
-    ):
+    def update_quantity(*, item_id: str, quantity: int):
+        item = CartRepository.get_item(item_id=item_id)
 
         if quantity <= 0:
             raise ValidationError("Quantity must be greater than 0.")
@@ -99,6 +92,7 @@ class CartService:
 
     @staticmethod
     @transaction.atomic
-    def remove_item(item):
+    def remove_item(item_id: str):
+        item = CartRepository.get_item(item_id=item_id)
 
         return CartRepository.delete_item(item)

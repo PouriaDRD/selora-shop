@@ -21,6 +21,7 @@ class CartSerializer(serializers.ModelSerializer):
 
         fields = [
             "id",
+            "session_key",
             "items",
             "items_count",
             "total_price",
