@@ -81,7 +81,7 @@ class ProductModel(models.Model):
 
 def product_image_upload_path(instance, filename):
     ext = filename.rsplit(".", 1)[-1]
-    return f"products/" f"{instance.id}/" f"{instance.id}.{ext}"
+    return f"products/" f"{instance.product.id}/" f"{instance.id}.{ext}"
 
 
 @cleanup.select

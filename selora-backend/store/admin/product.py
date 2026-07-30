@@ -1,6 +1,16 @@
 from django.contrib import admin
+from django.db.models import (
+    Exists,
+    OuterRef,
+    Case,
+    When,
+    F,
+)
 
-from store.models import ProductModel, ProductImageModel, ProductVariantModel
+from store.models import (
+    ProductModel,
+    ProductImageModel,
+)
 
 
 class ProductImageInline(admin.TabularInline):
@@ -8,20 +18,17 @@ class ProductImageInline(admin.TabularInline):
     extra = 1
 
 
-class ProductVariantInline(admin.TabularInline):
-    model = ProductVariantModel
-    extra = 1
-    filter_horizontal = ("attribute_values",)
-
-
 @admin.register(ProductModel)
 class ProductAdmin(admin.ModelAdmin):
+
     list_display = [
         "name",
         "category",
         "base_price",
+        "final_price",
+        "stock_status",
         "is_active",
-        "in_stock",
+        "created_at",
     ]
 
     list_filter = [
@@ -31,15 +38,40 @@ class ProductAdmin(admin.ModelAdmin):
 
     search_fields = [
         "name",
-        "description",
+        "slug",
     ]
 
-    prepopulated_fields = {
-        "slug": ("name",),
-    }
+    inlines = [
+        ProductImageInline,
+    ]
 
-    inlines = [ProductImageInline, ProductVariantInline]
+    list_select_related = [
+        "category",
+    ]
 
-    @admin.display(boolean=True)
-    def in_stock(self, obj):
-        return obj.in_stock
+    def get_queryset(self, request):
+
+        has_stock = ProductModel.objects.filter(
+            id=OuterRef("id"),
+            variants__is_active=True,
+            variants__stock__gt=0,
+        )
+
+        return (
+            super()
+            .get_queryset(request)
+            .select_related(
+                "category",
+            )
+            .annotate(has_stock=Exists(has_stock))
+        )
+
+    @admin.display(description="In Stock")
+    def stock_status(self, obj):
+
+        return "Yes" if obj.has_stock else "No"
+
+    @admin.display(description="Price")
+    def final_price(self, obj):
+
+        return obj.base_price

@@ -97,7 +97,7 @@ class ProductVariantModel(models.Model):
 
 def variant_image_upload_path(instance, filename):
     ext = filename.rsplit(".", 1)[-1]
-    return f"variants/" f"{instance.id}/" f"{instance.id}.{ext}"
+    return f"variants/" f"{instance.variant.id}/" f"{instance.id}.{ext}"
 
 
 @cleanup.select
