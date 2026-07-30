@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import {
 	Headphones,
 	LucideIcon,
@@ -19,77 +19,145 @@ import {
 
 const features = [
 	{
+		id: "collection",
 		icon: ShoppingBag,
 		title: "کلکسیون‌های منتخب",
-		desc: "محصولات برگزیده برای هر سلیقه و موقعیت.",
+		desc: "محصولات برگزیده و خاص برای هر سلیقه و سبک زندگی.",
 	},
 	{
+		id: "quality",
 		icon: ShieldCheck,
 		title: "تضمین کیفیت",
-		desc: "مواد اولیه مرغوب و صنایع‌دستی قابل اعتماد.",
+		desc: "انتخاب دقیق محصولات با تمرکز روی کیفیت و دوام.",
 	},
 	{
+		id: "shipping",
 		icon: Truck,
-		title: "ارسال رایگان",
-		desc: "ارسال رایگان برای تمام سفارش‌ها در سراسر جهان.",
+		title: "ارسال سریع",
+		desc: "ارسال مطمئن سفارش‌ها با تجربه‌ای ساده و سریع.",
 	},
 	{
+		id: "support",
 		icon: Headphones,
-		title: "پشتیبانی ۲۴/۷",
-		desc: "تیم ما همیشه و همه‌جا آماده کمک به شماست.",
+		title: "پشتیبانی همیشه همراه",
+		desc: "تیم پشتیبانی ما برای پاسخ‌گویی در کنار شماست.",
 	},
 ];
 
+const containerVariants: Variants = {
+	hidden: {},
+	visible: {
+		transition: {
+			staggerChildren: 0.12,
+		},
+	},
+};
+
+const itemVariants: Variants = {
+	hidden: {
+		opacity: 0,
+		y: 25,
+	},
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			duration: 0.5,
+			ease: "easeOut",
+		},
+	},
+};
+
 export function FeaturesSection() {
 	return (
-		<section className="w-full">
-			<div className="mb-12 text-center">
-				<h2 className="text-3xl font-bold" suppressHydrationWarning>
+		<section className="w-full py-20" dir="rtl">
+			<div className="mx-auto mb-14 max-w-2xl text-center">
+				<motion.h2
+					suppressHydrationWarning
+					initial={{ opacity: 0, y: 15 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{
+						duration: 0.5,
+						ease: "easeOut",
+					}}
+					className="text-3xl font-bold tracking-tight sm:text-4xl">
 					چرا سلورا را انتخاب کنید؟
-				</h2>
-				<p
-					className="mt-4 text-muted-foreground"
-					suppressHydrationWarning>
-					تجربه خریدی متفاوت با خدمات برتر ما.
-				</p>
+				</motion.h2>
+
+				<motion.p
+					suppressHydrationWarning
+					initial={{ opacity: 0, y: 15 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{
+						duration: 0.5,
+						delay: 0.1,
+						ease: "easeOut",
+					}}
+					className="mt-4 text-base leading-8 text-muted-foreground sm:text-lg">
+					تجربه‌ای متفاوت از خرید آنلاین با کیفیت، اعتماد و خدمات
+					حرفه‌ای.
+				</motion.p>
 			</div>
-			<div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-				{features.map((feature, idx) => (
+
+			<motion.div
+				variants={containerVariants}
+				initial="hidden"
+				whileInView="visible"
+				viewport={{
+					once: true,
+					margin: "-100px",
+				}}
+				className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+				{features.map((feature) => (
 					<Feature
-						key={idx}
-						idx={idx}
+						key={feature.id}
 						Icon={feature.icon}
 						title={feature.title}
 						desc={feature.desc}
 					/>
 				))}
-			</div>
+			</motion.div>
 		</section>
 	);
 }
 
 interface FeatureProps {
-	idx: number;
 	Icon: LucideIcon;
 	title: string;
 	desc: string;
 }
 
-function Feature({ idx, Icon, title, desc }: FeatureProps) {
+function Feature({ Icon, title, desc }: FeatureProps) {
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: 20 }}
-			whileInView={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.4, delay: idx * 0.1 }}
-			viewport={{ once: true }}>
-			<Card className="h-full border-0 shadow-lg backdrop-blur-sm transition hover:scale-105 hover:shadow-xl">
-				<CardHeader>
-					<Icon className="h-12 w-12 text-primary" />
-					<CardTitle suppressHydrationWarning>{title}</CardTitle>
+		<motion.div variants={itemVariants}>
+			<Card
+				className="
+					group relative h-full overflow-hidden
+					border bg-card/60
+					transition-all duration-300
+					hover:-translate-y-2
+					hover:shadow-xl
+				">
+				<CardHeader className="space-y-5">
+					<div
+						className={`
+							flex h-14 w-14 items-center justify-center
+							rounded-2xl bg-primary/10
+							transition-colors duration-300
+							group-hover:bg-primary/20`}>
+						<Icon className="h-7 w-7 text-primary" />
+					</div>
+
+					<CardTitle className="text-xl" suppressHydrationWarning>
+						{title}
+					</CardTitle>
 				</CardHeader>
+
 				<CardContent>
 					<CardDescription
-						className="text-muted-foreground"
+						className="leading-7"
 						suppressHydrationWarning>
 						{desc}
 					</CardDescription>

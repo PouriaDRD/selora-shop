@@ -14,7 +14,7 @@ export default function LandingPage() {
 	return (
 		<Fragment>
 			<Header />
-			<main className="mx-auto container max-w-7xl px-4 space-y-16 pt-12">
+			<main className="mx-auto container max-w-7xl px-4 space-y-12 pt-12">
 				<HeroSection />
 
 				<ProductsSection />

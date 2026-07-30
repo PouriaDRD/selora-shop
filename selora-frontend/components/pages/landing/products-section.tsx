@@ -3,17 +3,23 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { motion } from "framer-motion";
+
 import { Skeleton } from "@/components/ui";
 import { useGetCategoryDetails } from "@/features/store/mutations";
 import type { CategoryDetail } from "@/features/store/types/category.type";
 import type { Product } from "@/features/store/types/product.type";
 
+const fallbackImage = "/images/product-fallback.png";
+
 export function ProductsSection() {
 	const { data, isLoading } = useGetCategoryDetails();
 
-	if (isLoading) return <ProductsSkeleton />;
+	if (isLoading) {
+		return <ProductsSkeleton />;
+	}
 
-	if (!data || !data.status) {
+	if (!data?.status) {
 		return (
 			<ProductsMessage text="خطا در دریافت محصولات. لطفاً صفحه را رفرش کنید." />
 		);
@@ -26,7 +32,7 @@ export function ProductsSection() {
 	}
 
 	return (
-		<section id="products" className="w-full space-y-14">
+		<section id="products" className={`w-full space-y-16 py-20`} dir="rtl">
 			{categories.map((category) => (
 				<CategoryProducts key={category.id} category={category} />
 			))}
@@ -36,81 +42,127 @@ export function ProductsSection() {
 
 function CategoryProducts({ category }: { category: CategoryDetail }) {
 	return (
-		<div className="space-y-6">
-			<div className="flex items-center justify-between">
-				<h2 className="text-xl font-bold">{category.name}</h2>
+		<section className={`space-y-6`}>
+			<div className={`flex items-center justify-between`}>
+				<h2 className={`text-2xl font-bold tracking-tight`}>
+					{category.name}
+				</h2>
 
-				<span className="text-sm text-muted-foreground">
+				<span
+					className={`rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground`}>
 					{category.products.length} محصول
 				</span>
 			</div>
 
-			<div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+			<div
+				className={`grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`}>
 				{category.products.map((product) => (
 					<ProductCard key={product.id} product={product} />
 				))}
 			</div>
-		</div>
+		</section>
 	);
 }
 
 function ProductCard({ product }: { product: Product }) {
+	const image = product.main_image?.image ?? fallbackImage;
+
 	return (
-		<Link href={`/products/${product.slug}`}>
-			<article className="group overflow-hidden rounded-xl border bg-card transition hover:shadow-md">
-				<div className="relative aspect-square overflow-hidden bg-muted">
-					{product.main_image?.image ? (
+		<motion.div
+			initial={{
+				opacity: 0,
+				y: 20,
+			}}
+			whileInView={{
+				opacity: 1,
+				y: 0,
+			}}
+			viewport={{
+				once: true,
+			}}
+			transition={{
+				duration: 0.4,
+			}}>
+			<Link href={`/products/${product.slug}`}>
+				<article
+					className={`
+						group overflow-hidden rounded-2xl border bg-card
+						transition-all duration-300
+						hover:-translate-y-1
+						hover:shadow-xl
+					`}>
+					<div
+						className={`
+							relative aspect-square overflow-hidden
+							bg-muted
+						`}>
 						<Image
-							src={
-								product.main_image.image ||
-								"/images/product-fallback.png"
-							}
-							alt={product.main_image.alt_text || product.name}
+							src={image}
+							alt={product.main_image?.alt_text ?? product.name}
 							fill
-							priority
+							priority={false}
 							unoptimized
-							className="object-cover transition duration-300 group-hover:scale-105"
-							sizes="(max-width: 768px) 100vw, 33vw"
+							className={`
+								object-cover
+								transition-transform duration-500
+								group-hover:scale-105
+							`}
+							sizes={`(max-width: 640px) 100vw,
+								(max-width: 1024px) 50vw,
+								25vw`}
 						/>
-					) : (
-						<Image
-							src={"/images/product-fallback.png"}
-							alt={product.name}
-							fill
-							priority
-							unoptimized
-							className="object-cover"
-							sizes="(max-width:1024px)100vw,50vw"
+
+						<div
+							className={`
+								absolute inset-x-0 bottom-0
+								h-24 bg-linear-to-t
+								from-black/20 to-transparent
+							`}
 						/>
-					)}
-				</div>
-
-				<div className="space-y-3 p-4">
-					<h3 className="line-clamp-1 font-semibold">
-						{product.name}
-					</h3>
-
-					<p className="line-clamp-2 text-sm text-muted-foreground">
-						{product.description}
-					</p>
-
-					<div className="flex items-center justify-between">
-						<span className="font-bold">
-							{formatPrice(product.base_price)} تومان
-						</span>
-
-						<span
-							className={
-								product.in_stock
-									? "text-xs text-green-700"
-									: "text-xs text-destructive"
-							}>
-							{product.in_stock ? "موجود" : "ناموجود"}
-						</span>
 					</div>
-				</div>
-			</article>
-		</Link>
+
+					<div
+						className={`
+							space-y-4 p-5
+						`}>
+						<h3
+							className={`
+								line-clamp-1
+								text-lg font-semibold
+							`}>
+							{product.name}
+						</h3>
+
+						<p
+							className={`
+								line-clamp-2 min-h-12
+								text-sm leading-6
+								text-muted-foreground
+							`}>
+							{product.description}
+						</p>
+
+						<div
+							className={`
+								flex items-center justify-between
+								border-t pt-4
+							`}>
+							<span className={`font-bold`}>
+								{formatPrice(product.base_price)} تومان
+							</span>
+
+							<span
+								className={`
+									text-xs font-medium
+									${product.in_stock ? "text-green-600" : "text-destructive"}
+								`}>
+								{product.in_stock ? "موجود" : "ناموجود"}
+							</span>
+						</div>
+					</div>
+				</article>
+			</Link>
+		</motion.div>
 	);
 }
 
@@ -120,31 +172,55 @@ function formatPrice(price: number) {
 
 function ProductsMessage({ text }: { text: string }) {
 	return (
-		<section id="products" className="w-full">
-			<p className="text-center text-sm text-muted-foreground">{text}</p>
+		<section
+			id="products"
+			className={`flex w-full justify-center py-20`}
+			dir="rtl">
+			<p
+				className={`
+					text-sm text-muted-foreground
+				`}>
+				{text}
+			</p>
 		</section>
 	);
 }
 
 function ProductsSkeleton() {
 	return (
-		<section id="products" className="w-full">
-			<Skeleton className="mb-4 h-4 w-24" />
-			<Skeleton className="mb-12 h-8 w-72" />
+		<section id="products" className={`w-full space-y-14 py-20`}>
+			{Array.from({
+				length: 2,
+			}).map((_, i) => (
+				<div key={i} className={`space-y-6`}>
+					<div
+						className={`
+							flex items-center justify-between
+						`}>
+						<Skeleton className={`h-7 w-40`} />
 
-			<div className="space-y-14">
-				{Array.from({ length: 2 }).map((_, i) => (
-					<div key={i} className="space-y-6">
-						<Skeleton className="h-6 w-32" />
-
-						<div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-							{Array.from({ length: 4 }).map((_, j) => (
-								<Skeleton key={j} className="h-80 rounded-xl" />
-							))}
-						</div>
+						<Skeleton className={`h-6 w-20 rounded-full`} />
 					</div>
-				))}
-			</div>
+
+					<div
+						className={`
+							grid grid-cols-1 gap-6
+							sm:grid-cols-2
+							lg:grid-cols-4
+						`}>
+						{Array.from({
+							length: 4,
+						}).map((_, j) => (
+							<Skeleton
+								key={j}
+								className={`
+									h-96 rounded-2xl
+								`}
+							/>
+						))}
+					</div>
+				</div>
+			))}
 		</section>
 	);
 }

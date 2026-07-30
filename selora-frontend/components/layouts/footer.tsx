@@ -4,41 +4,92 @@ import Link from "next/link";
 
 import { AppIcon } from "../icons";
 
+const footerLinks = [
+	{
+		label: "حریم خصوصی",
+		href: "/",
+	},
+	{
+		label: "شرایط استفاده",
+		href: "/",
+	},
+	{
+		label: "تماس با ما",
+		href: "/",
+	},
+];
+
 export function Footer() {
-	const currentDate = new Date();
-	const year = currentDate.getFullYear();
+	const year = new Date().getFullYear();
 
 	return (
-		<footer className="border-t mt-16">
-			<div className="container max-w-7xl mx-auto px-4 py-8">
-				<div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-					<div className="flex items-center gap-2">
-						<AppIcon />
-						<span
-							className="text-sm font-semibold"
-							suppressHydrationWarning>
-							سلورا
-						</span>
-					</div>
+		<footer className="mt-20 border-t bg-background" dir="rtl">
+			<div className="container mx-auto max-w-7xl px-4 py-10">
+				<div
+					className={`
+						flex flex-col gap-8
+						md:flex-row md:items-center md:justify-between`}>
+					{/* Brand */}
+					<Link
+						href="/"
+						className={`
+							group flex items-center gap-3
+							transition-opacity
+							hover:opacity-80
+						`}>
+						<div
+							className={`
+								flex h-11 w-11 items-center justify-center
+								rounded-xl bg-primary/10
+								transition-colors
+								group-hover:bg-primary/20
+							`}>
+							<AppIcon className="h-6 w-6 text-primary" />
+						</div>
+
+						<div className="flex flex-col">
+							<span
+								className="text-base font-bold"
+								suppressHydrationWarning>
+								سلورا
+							</span>
+
+							<span
+								className="text-xs text-muted-foreground"
+								suppressHydrationWarning>
+								خریدی ساده، انتخابی بهتر
+							</span>
+						</div>
+					</Link>
+
+					{/* Navigation */}
+					<nav className="flex flex-wrap justify-center gap-x-6 gap-y-3">
+						{footerLinks.map((item, idx) => (
+							<Link
+								suppressHydrationWarning
+								key={idx}
+								href={item.href as "/"}
+								className={`
+									text-sm text-muted-foreground
+									transition-colors
+									hover:text-foreground
+								`}>
+								{item.label}
+							</Link>
+						))}
+					</nav>
+
+					{/* Copyright */}
 					<p
-						className="text-sm text-muted-foreground"
-						suppressHydrationWarning>
-						© {year} سلورا شاپ. تمامی حقوق محفوظ است.
+						suppressHydrationWarning
+						className={`
+							text-center text-sm
+							text-muted-foreground
+							md:text-right
+						`}>
+						© {year} سلورا شاپ
+						<br className="md:hidden" /> تمامی حقوق محفوظ است.
 					</p>
-					<div className="flex gap-6">
-						<Link
-							href="#"
-							className="text-sm text-muted-foreground"
-							suppressHydrationWarning>
-							حریم خصوصی
-						</Link>
-						<Link
-							href="#"
-							className="text-sm text-muted-foreground"
-							suppressHydrationWarning>
-							شرایط استفاده
-						</Link>
-					</div>
 				</div>
 			</div>
 		</footer>
