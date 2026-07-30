@@ -26,7 +26,9 @@ export default function CartPage() {
 				<Header />
 
 				<main className="container mx-auto max-w-7xl px-4 pt-12">
-					<div className="flex min-h-100 items-center justify-center">
+					<div
+						className="flex min-h-100 items-center justify-center"
+						suppressHydrationWarning>
 						در حال دریافت سبد خرید...
 					</div>
 				</main>
