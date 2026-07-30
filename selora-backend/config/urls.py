@@ -39,6 +39,7 @@ urlpatterns = [
     path(base_url + "v1/accounts/", include("accounts.api.v1.urls")),
     path(base_url + "v1/authentication/", include("authentication.api.v1.urls")),
     path(base_url + "v1/store/", include("store.api.v1.urls")),
+    path(base_url + "v1/cart/", include("cart.api.v1.urls")),
 ]
 
 
