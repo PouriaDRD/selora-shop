@@ -1,3 +1,5 @@
+import { AttributeValue } from "./attribute.type";
+
 export type ProductVariantImage = {
 	id: string;
 	image: string;
@@ -12,5 +14,6 @@ export type ProductVariant = {
 	price: number;
 	stock: number;
 	is_active: boolean;
+	attributes: AttributeValue[];
 	images?: ProductVariantImage[] | null;
 };

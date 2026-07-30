@@ -2,6 +2,7 @@ from rest_framework import serializers
 from store.models import (
     VariantImageModel,
     ProductVariantModel,
+    AttributeValueModel,
 )
 
 
@@ -16,10 +17,31 @@ class VariantImageSerializer(serializers.ModelSerializer):
         )
 
 
+class VariantAttributeSerializer(serializers.ModelSerializer):
+    attribute = serializers.CharField(
+        source="attribute.name",
+        read_only=True,
+    )
+
+    class Meta:
+        model = AttributeValueModel
+
+        fields = (
+            "id",
+            "attribute",
+            "value",
+        )
+
+
 class VariantSerializer(serializers.ModelSerializer):
     images = VariantImageSerializer(many=True, read_only=True)
     price = serializers.SerializerMethodField()
     label = serializers.SerializerMethodField()
+    attributes = VariantAttributeSerializer(
+        source="attribute_values",
+        many=True,
+        read_only=True,
+    )
 
     class Meta:
         model = ProductVariantModel
@@ -30,6 +52,7 @@ class VariantSerializer(serializers.ModelSerializer):
             "price",
             "stock",
             "is_active",
+            "attributes",
             "images",
         )
 
