@@ -32,7 +32,7 @@ export default function ProductDetailPage() {
 			<div className="grid gap-8 lg:grid-cols-2">
 				<ProductInfo product={product} />
 
-				<ProductGallery images={product.images} name={product.name} />
+				<ProductGallery product={product} />
 			</div>
 		</section>
 	);

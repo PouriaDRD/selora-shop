@@ -1,57 +1,80 @@
 "use client";
 
+import { useMemo, useState } from "react";
+
 import Image from "next/image";
 
-import type { ProductImage } from "@/features/store/types";
+import type {
+	ProductDetail,
+	ProductImage,
+	ProductVariantImage,
+} from "@/features/store/types";
 
 interface Props {
-	images?: ProductImage[] | null;
-	name: string;
+	product: ProductDetail;
 }
 
-export function ProductGallery({ images, name }: Props) {
-	const mainImage = images?.find((image) => image.is_main) ?? images?.[0];
+type GalleryImage = ProductImage | ProductVariantImage;
+
+export function ProductGallery({ product }: Props) {
+	const images = useMemo<GalleryImage[]>(() => {
+		const map = new Map<string, GalleryImage>();
+
+		product.images?.forEach((image) => {
+			map.set(image.id, image);
+		});
+
+		product.variants.forEach((variant) => {
+			variant.images?.forEach((image) => {
+				map.set(image.id, image);
+			});
+		});
+
+		return [...map.values()];
+	}, [product]);
+
+	const defaultImage =
+		images.find((image) => image.is_main) ?? images[0] ?? null;
+
+	const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(
+		defaultImage,
+	);
 
 	return (
 		<div className="space-y-4">
 			<div className="relative aspect-square overflow-hidden rounded-xl border bg-muted">
-				{mainImage ? (
-					<Image
-						src={mainImage.image || "/images/product-fallback.png"}
-						alt={mainImage.alt_text || name}
-						fill
-						priority
-						unoptimized
-						className="object-cover"
-						sizes="(max-width:1024px)100vw,50vw"
-					/>
-				) : (
-					<Image
-						src={"/images/product-fallback.png"}
-						alt={name}
-						fill
-						priority
-						unoptimized
-						className="object-cover"
-						sizes="(max-width:1024px)100vw,50vw"
-					/>
-				)}
+				<Image
+					src={selectedImage?.image ?? "/images/product-fallback.png"}
+					alt={selectedImage?.alt_text || product.name}
+					fill
+					priority
+					unoptimized
+					className="object-cover"
+					sizes="(max-width:1024px)100vw,50vw"
+				/>
 			</div>
 
-			<div className="grid grid-cols-5 gap-3">
-				{images?.map((image) => (
-					<div
+			<div className="grid grid-cols-4 gap-3">
+				{images.map((image) => (
+					<button
 						key={image.id}
-						className="relative aspect-square overflow-hidden rounded-lg border">
+						type="button"
+						onClick={() => setSelectedImage(image)}
+						className={`relative aspect-square overflow-hidden rounded-lg border transition
+							${
+								selectedImage?.id === image.id
+									? "border-primary ring-2 ring-primary"
+									: "border-border hover:border-primary/50"
+							}`}>
 						<Image
-							src={image.image || "/images/product-fallback.png"}
+							src={image.image ?? "/images/product-fallback.png"}
 							alt={image.alt_text}
 							fill
 							unoptimized
 							className="object-cover"
-							sizes="100px"
+							sizes="120px"
 						/>
-					</div>
+					</button>
 				))}
 			</div>
 		</div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Button } from "@/components/ui";
 import type { ProductVariant } from "@/features/store/types";
 
 interface Props {
@@ -21,19 +22,12 @@ export function VariantSelector({ variants }: Props) {
 
 			<div className="flex flex-wrap gap-3">
 				{variants.map((variant) => (
-					<button
+					<Button
 						key={variant.id}
 						onClick={() => setSelected(variant.id)}
-						className={`
-							rounded-lg border px-4 py-2 text-sm
-							${
-								selected === variant.id
-									? "border-primary bg-primary text-primary-foreground"
-									: "bg-background"
-							}
-						`}>
+						variant={selected ? "default" : "secondary"}>
 						{variant.label}
-					</button>
+					</Button>
 				))}
 			</div>
 		</div>
