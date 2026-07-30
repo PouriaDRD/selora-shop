@@ -65,4 +65,10 @@ class CartItemModel(models.Model):
 
     @property
     def subtotal(self):
-        return self.variant.price * self.quantity
+        price = (
+            self.variant.price_override
+            if self.variant.price_override is not None
+            else self.variant.product.base_price
+        )
+
+        return price * self.quantity

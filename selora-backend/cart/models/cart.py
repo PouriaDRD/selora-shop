@@ -3,7 +3,14 @@ import uuid
 
 from django.conf import settings
 from django.db import models
-from django.db.models import F, Sum, DecimalField, ExpressionWrapper
+from django.db.models import (
+    F,
+    Sum,
+    DecimalField,
+    ExpressionWrapper,
+    Case,
+    When,
+)
 
 
 class CartModel(models.Model):
@@ -70,16 +77,30 @@ class CartModel(models.Model):
     @property
     def total_price(self):
         return (
-            self.items.aggregate(  # type: ignore
+            self.items.annotate(  # type: ignore
+                final_price=Case(
+                    When(
+                        variant__price_override__isnull=False,
+                        then=F("variant__price_override"),
+                    ),
+                    default=F("variant__product__base_price"),
+                    output_field=DecimalField(
+                        max_digits=12,
+                        decimal_places=2,
+                    ),
+                )
+            ).aggregate(
                 total=Sum(
                     ExpressionWrapper(
-                        F("quantity") * F("variant__price"),
+                        F("quantity") * F("final_price"),
                         output_field=DecimalField(
-                            max_digits=18,
+                            max_digits=12,
                             decimal_places=2,
                         ),
                     )
                 )
-            )["total"]
+            )[
+                "total"
+            ]
             or 0
         )
