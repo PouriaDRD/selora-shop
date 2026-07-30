@@ -18,22 +18,22 @@ export default function AppLogo(props: Props) {
 	return (
 		<div
 			className={cn(
-				"flex items-center justify-center text-center gap-4",
+				"flex items-center justify-center text-center gap-1",
 				className,
 			)}>
+			<div className="size-8">
+				<AppIcon className="size-full" />
+			</div>
 			<Activity mode={hideLogoText ? "hidden" : "visible"}>
 				<span
 					suppressHydrationWarning
 					className={cn(
-						"font-bold text-xl md:text-2xl text-center font-mono!",
+						"font-bold text-xl md:text-2xl text-center",
 						`${hideLogoTextOnMobile && "hidden md:block"}`,
 					)}>
-					Selora Shop
+					سلورا
 				</span>
 			</Activity>
-			<div className="size-7 md:size-8">
-				<AppIcon className="size-full" />
-			</div>
 		</div>
 	);
 }

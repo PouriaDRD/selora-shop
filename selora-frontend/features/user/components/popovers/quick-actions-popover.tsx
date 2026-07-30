@@ -54,7 +54,7 @@ export function QuickActionsPopover() {
 				}
 			/>
 			<PopoverContent>
-				<PopoverHeader className="gap-0">
+				<PopoverHeader className="gap-0 bg-muted rounded-lg py-2 px-4">
 					<PopoverTitle>{user.username}</PopoverTitle>
 					<PopoverDescription>{user.full_name}</PopoverDescription>
 				</PopoverHeader>

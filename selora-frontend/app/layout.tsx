@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 
-import { Header } from "@/components/layouts";
 import { QCProvider } from "@/features/api/contexts";
 import { ThemeProvider } from "@/features/preferences/contexts";
 import { AppToaster } from "@/features/shared/contexts";
@@ -13,9 +12,9 @@ import { UserProvider } from "@/features/user/context";
 
 import "./globals.css";
 
-const SITE_NAME = "Selora Shop";
-const SITE_TITLE = "Selora Shop";
-const SITE_DESCRIPTION = "Selora Shop";
+const SITE_NAME = "سلورا";
+const SITE_TITLE = "سلورا";
+const SITE_DESCRIPTION = "سلورا شاپ،  بگرد، ببین و خرید کن";
 
 const SITE_URL = "https://selora.pouria-drd.ir";
 
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
 
 	title: {
 		default: SITE_NAME,
-		template: "Selora Shop | %s",
+		template: "سلورا | %s",
 	},
 
 	description: SITE_DESCRIPTION,
@@ -147,12 +146,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 						enableSystem
 						disableTransitionOnChange>
 						<AppToaster />
-						<UserProvider>
-							<div className="flex flex-col overflow-hidden w-full h-dvh">
-								<Header />
-								{children}
-							</div>
-						</UserProvider>
+						<UserProvider>{children}</UserProvider>
 					</ThemeProvider>
 				</QCProvider>
 			</body>
