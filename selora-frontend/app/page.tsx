@@ -7,6 +7,7 @@ import {
 	CtaSection,
 	FeaturesSection,
 	HeroSection,
+	ProductsSection,
 } from "@/components/pages/landing";
 
 export default function LandingPage() {
@@ -15,6 +16,8 @@ export default function LandingPage() {
 			<Header />
 			<main className="mx-auto container max-w-7xl px-4 space-y-16 pt-12">
 				<HeroSection />
+
+				<ProductsSection />
 
 				<FeaturesSection />
 
