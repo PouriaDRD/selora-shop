@@ -42,17 +42,31 @@ export function VariantSelector({ variants, onChange }: Props) {
 	});
 
 	const selectedVariant = useMemo(() => {
-		return variants.find((variant) =>
-			variant.attributes.every(
+		return variants.find((variant) => {
+			if (
+				variant.attributes.length !==
+				Object.keys(selectedAttributes).length
+			) {
+				return false;
+			}
+
+			return variant.attributes.every(
 				(attribute) =>
 					selectedAttributes[attribute.attribute] === attribute.value,
-			),
-		);
+			);
+		});
 	}, [variants, selectedAttributes]);
 
 	useEffect(() => {
 		onChange?.(selectedVariant);
 	}, [selectedVariant, onChange]);
+
+	function handleSelect(attribute: string, value: string) {
+		setSelectedAttributes((prev) => ({
+			...prev,
+			[attribute]: value,
+		}));
+	}
 
 	return (
 		<div className="space-y-6">
@@ -71,10 +85,7 @@ export function VariantSelector({ variants, onChange }: Props) {
 									type="button"
 									variant={active ? "default" : "outline"}
 									onClick={() =>
-										setSelectedAttributes((prev) => ({
-											...prev,
-											[attribute]: value,
-										}))
+										handleSelect(attribute, value)
 									}>
 									{value}
 								</Button>

@@ -68,9 +68,9 @@ class ProductVariantModel(models.Model):
 
     @property
     def label(self):
-        values = self.attribute_values.all().order_by("attribute__name")
+        values = self.attribute_values.all()
 
-        return " / ".join(value.value for value in values)
+        return " / ".join(value.value for value in values) if values else "Default"
 
 
 def variant_image_upload_path(instance, filename):

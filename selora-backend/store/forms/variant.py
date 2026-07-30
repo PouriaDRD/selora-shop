@@ -10,7 +10,6 @@ class ProductVariantAdminForm(forms.ModelForm):
         fields = "__all__"
 
     def clean_attribute_values(self):
-
         values = self.cleaned_data.get("attribute_values")
 
         if not values:
@@ -23,40 +22,32 @@ class ProductVariantAdminForm(forms.ModelForm):
             )
         )
 
+        # هر attribute فقط یک value
         if len(attribute_ids) != len(set(attribute_ids)):
-
-            raise forms.ValidationError("Each attribute can only have one value")
+            raise forms.ValidationError("هر ویژگی فقط می‌تواند یک مقدار داشته باشد.")
 
         return values
 
     def clean(self):
-
         cleaned_data = super().clean()
 
         product = cleaned_data.get("product")
+        attribute_values = cleaned_data.get("attribute_values")
 
-        values = cleaned_data.get("attribute_values")
-
-        if not product or not values:
+        if not product or not attribute_values:
             return cleaned_data
 
         current_values = set(
-            values.values_list(
+            attribute_values.values_list(
                 "id",
                 flat=True,
             )
         )
 
         variants = (
-            ProductVariantModel.objects.filter(
-                product=product,
-            )
-            .exclude(
-                pk=self.instance.pk,
-            )
-            .prefetch_related(
-                "attribute_values",
-            )
+            ProductVariantModel.objects.filter(product=product)
+            .exclude(pk=self.instance.pk)
+            .prefetch_related("attribute_values")
         )
 
         for variant in variants:
@@ -69,9 +60,8 @@ class ProductVariantAdminForm(forms.ModelForm):
             )
 
             if variant_values == current_values:
-
                 raise forms.ValidationError(
-                    "This combination of attributes already exists.",
+                    "این ترکیب ویژگی قبلاً برای این محصول ساخته شده است."
                 )
 
         return cleaned_data
