@@ -5,6 +5,7 @@ from store.models import (
     ProductImageModel,
     ProductVariantModel,
 )
+from .variant import VariantSerializer
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -18,29 +19,17 @@ class ProductImageSerializer(serializers.ModelSerializer):
         )
 
 
-class ProductVariantShortSerializer(serializers.ModelSerializer):
-    price = serializers.ReadOnlyField()
-    label = serializers.ReadOnlyField()
-
-    class Meta:
-        model = ProductVariantModel
-        fields = (
-            "id",
-            "sku",
-            "label",
-            "price",
-            "stock",
-            "is_active",
-        )
-
-
 class ProductListSerializer(serializers.ModelSerializer):
 
     main_image = serializers.SerializerMethodField()
 
-    in_stock = serializers.BooleanField(source="has_stock", read_only=True)
+    in_stock = serializers.BooleanField(
+        source="has_stock",
+        read_only=True,
+    )
 
     class Meta:
+
         model = ProductModel
 
         fields = (
@@ -55,40 +44,51 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     def get_main_image(self, obj):
 
-        images = getattr(obj, "main_image_list", [])
+        images = getattr(obj, "prefetched_main_images", [])
 
         if not images:
             return None
 
-        return ProductImageSerializer(images[0], context=self.context).data
+        return ProductImageSerializer(
+            images[0],
+            context=self.context,
+        ).data
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
 
     images = ProductImageSerializer(
         many=True,
         read_only=True,
     )
 
-    variants = ProductVariantShortSerializer(
+    variants = VariantSerializer(
         many=True,
         read_only=True,
     )
 
-    in_stock = serializers.ReadOnlyField()
+    min_price = serializers.IntegerField(
+        read_only=True,
+    )
 
-    min_price = serializers.SerializerMethodField()
-    max_price = serializers.SerializerMethodField()
+    max_price = serializers.IntegerField(
+        read_only=True,
+    )
+
+    in_stock = serializers.BooleanField(
+        source="has_stock",
+        read_only=True,
+    )
 
     class Meta:
+
         model = ProductModel
+
         fields = (
             "id",
             "name",
             "slug",
             "description",
-            "category",
             "base_price",
             "min_price",
             "max_price",
@@ -97,9 +97,3 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             "variants",
             "created_at",
         )
-
-    def get_min_price(self, obj):
-        return obj.price_range[0]
-
-    def get_max_price(self, obj):
-        return obj.price_range[1]

@@ -4,7 +4,6 @@ from .product import (
     ProductListSerializer,
     ProductDetailSerializer,
     ProductImageSerializer,
-    ProductVariantShortSerializer,
 )
 
 __all__ = [
@@ -15,5 +14,4 @@ __all__ = [
     "ProductListSerializer",
     "ProductDetailSerializer",
     "ProductImageSerializer",
-    "ProductVariantShortSerializer",
 ]
