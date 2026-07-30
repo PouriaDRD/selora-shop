@@ -1,5 +1,7 @@
 "use client";
 
+import { Minus, Plus } from "lucide-react";
+
 import { Button } from "@/components/ui";
 import { useCartActions } from "@/features/cart/hooks";
 import type { ProductDetail, ProductVariant } from "@/features/store/types";
@@ -14,6 +16,7 @@ export function ProductCartAction({ product, variant }: Props) {
 		addItem,
 		increaseQuantity,
 		decreaseQuantity,
+		isUpdatingItem,
 		cartStore,
 		isAddingItem,
 	} = useCartActions();
@@ -45,8 +48,9 @@ export function ProductCartAction({ product, variant }: Props) {
 				<Button
 					variant="ghost"
 					className="h-full w-14 rounded-none"
+					disabled={isUpdatingItem}
 					onClick={() => decreaseQuantity(cartItem.id)}>
-					−
+					<Minus className="size-4" />
 				</Button>
 
 				<div className="flex-1 text-center font-semibold">
@@ -56,8 +60,9 @@ export function ProductCartAction({ product, variant }: Props) {
 				<Button
 					variant="ghost"
 					className="h-full w-14 rounded-none"
+					disabled={isUpdatingItem}
 					onClick={() => increaseQuantity(cartItem.id)}>
-					+
+					<Plus className="size-4" />
 				</Button>
 			</div>
 		);

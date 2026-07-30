@@ -205,6 +205,8 @@ export function useCartActions() {
 		removeItem,
 		isRemovingItem: removeItemMutation.isPending,
 
+		isUpdatingItem: updateItemMutation.isPending,
+
 		cartStore: cartStore,
 	};
 }
