@@ -27,7 +27,7 @@ export function ProductInfo({ product }: Props) {
 	const buttonText = !product.in_stock
 		? "ناموجود"
 		: !selectedVariant
-			? "ترکیب محصول را انتخاب کنید"
+			? "ناموجود"
 			: selectedVariant.stock <= 0
 				? "ناموجود"
 				: !selectedVariant.is_active
