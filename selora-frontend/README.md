@@ -116,6 +116,21 @@ npm run start    # start the production server
 npm run lint     # run ESLint
 ```
 
+## Run with Docker
+
+Build and start the frontend container:
+
+```bash
+docker build -t selora-frontend .
+docker run -p 3000:3000 selora-frontend
+```
+
+You can also use Docker Compose from the project root:
+
+```bash
+docker compose up frontend --build
+```
+
 ## Backend Connection
 
 The frontend expects the Selora backend to be running and reachable at the configured API base URL. The default setup points to:

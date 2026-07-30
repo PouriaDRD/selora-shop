@@ -33,6 +33,7 @@ cd selora-backend
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
+copy .env.example .env
 python manage.py migrate
 python manage.py runserver
 ```
@@ -41,6 +42,7 @@ python manage.py runserver
 
 ```bash
 cd selora-frontend
+copy .env.example .env
 npm install
 npm run dev
 ```
@@ -49,6 +51,31 @@ npm run dev
 
 - Backend docs: [selora-backend/README.md](selora-backend/README.md)
 - Frontend docs: [selora-frontend/README.md](selora-frontend/README.md)
+
+## Run with Docker
+
+From the project root, start both services:
+
+```bash
+docker compose up --build
+```
+
+Then open:
+
+- Frontend: http://localhost:3000
+- Backend: http://127.0.0.1:8000/api/
+- Docs: http://127.0.0.1:8000/docs/
+- Admin: http://127.0.0.1:8000/api/admin/
+
+Credentials:
+username: admin
+password: admin
+
+To stop the containers:
+
+```bash
+docker compose down
+```
 
 ## Notes
 

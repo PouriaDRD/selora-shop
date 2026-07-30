@@ -185,6 +185,21 @@ Typical endpoints include:
 - `/api/docs/`
 - `/api/redoc/`
 
+## Run with Docker
+
+Build and start the backend container:
+
+```bash
+docker build -t selora-backend .
+docker run -p 8000:8000 --env-file .env selora-backend
+```
+
+You can also use Docker Compose from the project root:
+
+```bash
+docker compose up backend --build
+```
+
 ## Testing
 
 Run the test suite with:
