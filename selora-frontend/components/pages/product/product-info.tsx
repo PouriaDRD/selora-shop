@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Button } from "@/components/ui";
 import type { ProductDetail, ProductVariant } from "@/features/store/types";
 
 import { VariantSelector } from "./variant-selector";
@@ -16,6 +17,22 @@ export function ProductInfo({ product }: Props) {
 	>(product.variants[0]);
 
 	const price = selectedVariant?.price ?? product.min_price;
+
+	const isAvailable =
+		product.in_stock &&
+		!!selectedVariant &&
+		selectedVariant.is_active &&
+		selectedVariant.stock > 0;
+
+	const buttonText = !product.in_stock
+		? "ناموجود"
+		: !selectedVariant
+			? "ترکیب محصول را انتخاب کنید"
+			: selectedVariant.stock <= 0
+				? "ناموجود"
+				: !selectedVariant.is_active
+					? "ناموجود"
+					: "افزودن به سبد خرید";
 
 	return (
 		<div className="space-y-6">
@@ -37,11 +54,7 @@ export function ProductInfo({ product }: Props) {
 				onChange={setSelectedVariant}
 			/>
 
-			<button
-				disabled={!product.in_stock || !selectedVariant}
-				className="h-12 w-full rounded-xl bg-primary text-primary-foreground disabled:opacity-50">
-				{product.in_stock ? "افزودن به سبد خرید" : "ناموجود"}
-			</button>
+			<Button disabled={!isAvailable}>{buttonText}</Button>
 		</div>
 	);
 }

@@ -32,13 +32,13 @@ export function VariantSelector({ variants, onChange }: Props) {
 	const [selectedAttributes, setSelectedAttributes] = useState<
 		Record<string, string>
 	>(() => {
-		const selected: Record<string, string> = {};
+		const initial: Record<string, string> = {};
 
 		variants[0]?.attributes.forEach((attribute) => {
-			selected[attribute.attribute] = attribute.value;
+			initial[attribute.attribute] = attribute.value;
 		});
 
-		return selected;
+		return initial;
 	});
 
 	const selectedVariant = useMemo(() => {
@@ -54,25 +54,6 @@ export function VariantSelector({ variants, onChange }: Props) {
 		onChange?.(selectedVariant);
 	}, [selectedVariant, onChange]);
 
-	const isOptionAvailable = (attributeName: string, value: string) => {
-		const nextSelection = {
-			...selectedAttributes,
-			[attributeName]: value,
-		};
-
-		return variants.some((variant) =>
-			variant.attributes.every((attribute) => {
-				const selectedValue = nextSelection[attribute.attribute];
-
-				return !selectedValue || selectedValue === attribute.value;
-			}),
-		);
-	};
-
-	if (!variants.length) {
-		return null;
-	}
-
 	return (
 		<div className="space-y-6">
 			{[...attributes.entries()].map(([attribute, values]) => (
@@ -84,16 +65,10 @@ export function VariantSelector({ variants, onChange }: Props) {
 							const active =
 								selectedAttributes[attribute] === value;
 
-							const available = isOptionAvailable(
-								attribute,
-								value,
-							);
-
 							return (
 								<Button
 									key={value}
 									type="button"
-									disabled={!available}
 									variant={active ? "default" : "outline"}
 									onClick={() =>
 										setSelectedAttributes((prev) => ({
