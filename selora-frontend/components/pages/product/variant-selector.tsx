@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui";
 import type { ProductVariant } from "@/features/store/types";
@@ -29,7 +29,9 @@ export function VariantSelector({ variants, onChange }: Props) {
 		return map;
 	}, [variants]);
 
-	const defaultSelection = useMemo(() => {
+	const [selectedAttributes, setSelectedAttributes] = useState<
+		Record<string, string>
+	>(() => {
 		const selected: Record<string, string> = {};
 
 		variants[0]?.attributes.forEach((attribute) => {
@@ -37,10 +39,7 @@ export function VariantSelector({ variants, onChange }: Props) {
 		});
 
 		return selected;
-	}, [variants]);
-
-	const [selectedAttributes, setSelectedAttributes] =
-		useState<Record<string, string>>(defaultSelection);
+	});
 
 	const selectedVariant = useMemo(() => {
 		return variants.find((variant) =>
@@ -51,9 +50,24 @@ export function VariantSelector({ variants, onChange }: Props) {
 		);
 	}, [variants, selectedAttributes]);
 
-	useMemo(() => {
+	useEffect(() => {
 		onChange?.(selectedVariant);
 	}, [selectedVariant, onChange]);
+
+	const isOptionAvailable = (attributeName: string, value: string) => {
+		const nextSelection = {
+			...selectedAttributes,
+			[attributeName]: value,
+		};
+
+		return variants.some((variant) =>
+			variant.attributes.every((attribute) => {
+				const selectedValue = nextSelection[attribute.attribute];
+
+				return !selectedValue || selectedValue === attribute.value;
+			}),
+		);
+	};
 
 	if (!variants.length) {
 		return null;
@@ -66,24 +80,31 @@ export function VariantSelector({ variants, onChange }: Props) {
 					<h3 className="font-medium">{attribute}</h3>
 
 					<div className="flex flex-wrap gap-2">
-						{values.map((value) => (
-							<Button
-								key={value}
-								type="button"
-								variant={
-									selectedAttributes[attribute] === value
-										? "default"
-										: "outline"
-								}
-								onClick={() =>
-									setSelectedAttributes((prev) => ({
-										...prev,
-										[attribute]: value,
-									}))
-								}>
-								{value}
-							</Button>
-						))}
+						{values.map((value) => {
+							const active =
+								selectedAttributes[attribute] === value;
+
+							const available = isOptionAvailable(
+								attribute,
+								value,
+							);
+
+							return (
+								<Button
+									key={value}
+									type="button"
+									disabled={!available}
+									variant={active ? "default" : "outline"}
+									onClick={() =>
+										setSelectedAttributes((prev) => ({
+											...prev,
+											[attribute]: value,
+										}))
+									}>
+									{value}
+								</Button>
+							);
+						})}
 					</div>
 				</div>
 			))}
