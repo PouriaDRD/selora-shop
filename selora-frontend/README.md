@@ -126,7 +126,7 @@ http://127.0.0.1:8000/api/v1/
 
 ## Environment Variables
 
-Create a `.env.local` file in the frontend folder and set the values you need:
+Create a `.env` file in the frontend folder and set the values you need:
 
 ```env
 BASE_API_URL="http://127.0.0.1:8000/api/v1/"
