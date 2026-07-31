@@ -61,6 +61,15 @@ class RegisterSerializer(serializers.Serializer):
         },
     )
 
+    session_key = serializers.CharField(
+        required=False,
+        write_only=True,
+        error_messages={
+            "required": "session_key is required",
+            "blank": "session_key can not be blank",
+        },
+    )
+
     def validate(self, attrs):
         password = attrs["password"]
         confirm_password = attrs["confirm_password"]
@@ -90,6 +99,7 @@ class RegisterSerializer(serializers.Serializer):
             request=request,  # type: ignore
             first_name=first_name,
             last_name=last_name,
+            session_key=validated_data["session_key"],
         )
 
         return result

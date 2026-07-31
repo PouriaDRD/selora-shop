@@ -7,6 +7,7 @@ from .token import TokenService
 from .login_history import LoginHistoryService
 
 
+from cart.services import CartService
 from accounts.services import UserService
 
 logger = logging.getLogger("AuthService")
@@ -35,13 +36,15 @@ class AuthService:
             Authentication response.
         """
         username = cls.normalize_username(username)
-
+        session_key = extra_fields.get("session_key")
+        extra_fields.pop("session_key")
         try:
             user = UserService.create_user(
                 username=username, password=password, **extra_fields
             )
 
             LoginHistoryService.create_success(user, request)
+            CartService.merge_guest_cart(user=user, session_key=session_key)
 
             return cls.auth_response(user)
 
@@ -53,7 +56,7 @@ class AuthService:
             raise ValidationError("Failed to login user")
 
     @classmethod
-    def login(cls, username: str, password: str, request: Request):
+    def login(cls, username: str, password: str, request: Request, **extra_fields):
         """
         Login user with username and password.
 
@@ -69,6 +72,8 @@ class AuthService:
             ValidationError: If username or password is invalid.
         """
         username = cls.normalize_username(username)
+        session_key = extra_fields.get("session_key")
+        extra_fields.pop("session_key")
 
         try:
             user = authenticate(
@@ -85,6 +90,7 @@ class AuthService:
                 raise ValidationError("Invalid username or password.")
 
             LoginHistoryService.create_success(user, request)
+            CartService.merge_guest_cart(user=user, session_key=session_key)
 
             return cls.auth_response(user)
 

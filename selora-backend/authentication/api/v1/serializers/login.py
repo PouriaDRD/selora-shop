@@ -28,6 +28,15 @@ class LoginSerializer(serializers.Serializer):
         },
     )
 
+    session_key = serializers.CharField(
+        required=False,
+        write_only=True,
+        error_messages={
+            "required": "session_key is required",
+            "blank": "session_key can not be blank",
+        },
+    )
+
     def validate(self, attrs):
         """
         Validate credentials via AuthService.
@@ -37,6 +46,7 @@ class LoginSerializer(serializers.Serializer):
                 username=attrs["username"],
                 password=attrs["password"],
                 request=self.context.get("request"),  # type: ignore
+                session_key=attrs["session_key"],
             )
         except:
             raise ValidationError(

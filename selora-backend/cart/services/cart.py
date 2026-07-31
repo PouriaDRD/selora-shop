@@ -1,7 +1,7 @@
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
-from cart.models import CartModel
+from cart.models import CartModel, CartItemModel
 
 from cart.repositories import (
     CartRepository,
@@ -27,7 +27,7 @@ class CartService:
         if not cart and session_key:
             cart = CartRepository.get_by_session_key(session_key)
 
-        if not cart:
+        if not cart and user:
             cart = CartRepository.create(
                 user=user,
                 # session_key=session_key,
@@ -35,6 +35,7 @@ class CartService:
 
             cart = CartRepository.get_by_user(user)
 
+        # attach user to cart
         if user and not cart.user:  # type: ignore
             cart.user = user  # type: ignore
             cart.save()  # type: ignore
@@ -96,3 +97,60 @@ class CartService:
         item = CartRepository.get_item(item_id=item_id)
 
         return CartRepository.delete_item(item)
+
+    @staticmethod
+    @transaction.atomic
+    def merge_guest_cart(*, user, session_key: str | None = None):
+
+        guest_cart = (
+            CartModel.objects.filter(
+                session_key=session_key,
+                user__isnull=True,
+            )
+            .prefetch_related(
+                "items",
+            )
+            .first()
+        )
+
+        if not guest_cart:
+            return None
+
+        user_cart = CartModel.objects.filter(
+            user=user,
+        ).first()
+
+        if not user_cart:
+            user_cart = CartModel.objects.create(
+                user=user,
+            )
+
+        for guest_item in guest_cart.items.all():  # type: ignore
+
+            existing = CartItemModel.objects.filter(
+                cart=user_cart,
+                variant=guest_item.variant,
+            ).first()
+
+            if existing:
+
+                existing.quantity += guest_item.quantity
+
+                existing.save(
+                    update_fields=[
+                        "quantity",
+                        "updated_at",
+                    ]
+                )
+
+            else:
+
+                CartItemModel.objects.create(
+                    cart=user_cart,
+                    variant=guest_item.variant,
+                    quantity=guest_item.quantity,
+                )
+
+        guest_cart.delete()
+
+        return user_cart
