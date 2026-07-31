@@ -1,5 +1,7 @@
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.throttling import ScopedRateThrottle
+from rest_framework.permissions import AllowAny
+
 from drf_spectacular.utils import (
     OpenApiResponse,
     extend_schema,
@@ -95,6 +97,10 @@ class ProductDetailAPIView(RetrieveAPIView):
 
     http_method_names = [
         "get",
+    ]
+
+    permission_classes = [
+        AllowAny,
     ]
 
     throttle_scope = "anon"

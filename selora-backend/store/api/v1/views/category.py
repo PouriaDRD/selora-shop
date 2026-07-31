@@ -2,7 +2,7 @@ from drf_spectacular.utils import (
     OpenApiResponse,
     extend_schema,
 )
-
+from rest_framework.permissions import AllowAny
 from rest_framework.generics import ListAPIView
 from rest_framework.throttling import ScopedRateThrottle
 
@@ -100,6 +100,10 @@ class CategoryDetailAPIView(ListAPIView):
 
     http_method_names = [
         "get",
+    ]
+
+    permission_classes = [
+        AllowAny,
     ]
 
     serializer_class = CategoryDetailSerializer
