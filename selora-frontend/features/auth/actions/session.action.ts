@@ -7,6 +7,7 @@ import { buildApiUrl, endpoints } from "@/features/api/lib";
 const ACCESS_TOKEN_COOKIE_NAME = "acs";
 const REFRESH_TOKEN_COOKIE_NAME = "rfs";
 const CSRF_TOKEN_COOKIE_NAME = "csrftoken";
+const CART_SESSION_COOKIE_NAME = "crtss";
 
 type TokenType =
 	| typeof ACCESS_TOKEN_COOKIE_NAME
@@ -116,6 +117,7 @@ export async function clearSession(): Promise<void> {
 	cookieStore.delete(ACCESS_TOKEN_COOKIE_NAME);
 	cookieStore.delete(REFRESH_TOKEN_COOKIE_NAME);
 	cookieStore.delete(CSRF_TOKEN_COOKIE_NAME);
+	cookieStore.delete(CART_SESSION_COOKIE_NAME);
 }
 
 /**
