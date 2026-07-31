@@ -40,6 +40,9 @@ class CartService:
             cart.user = user  # type: ignore
             cart.save()  # type: ignore
 
+        if not cart and not user and not session_key:
+            cart = CartRepository.create()
+
         return cart
 
     @staticmethod
