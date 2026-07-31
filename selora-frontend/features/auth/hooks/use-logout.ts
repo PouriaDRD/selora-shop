@@ -35,7 +35,7 @@ export function useLogout() {
 							await logoutAction();
 							clearUser();
 							toast.success("با موفقیت خارج شدید");
-							window.location.href = "/auth/login";
+							window.location.href = "/";
 						},
 						onError: async () => {
 							toast.error("خطا در خارج شدن از سیستم");

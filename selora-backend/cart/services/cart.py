@@ -24,9 +24,6 @@ class CartService:
         if user:
             cart = CartRepository.get_by_user(user)
 
-        if not cart and session_key:
-            cart = CartRepository.get_by_session_key(session_key)
-
         if not cart and user:
             cart = CartRepository.create(
                 user=user,
@@ -34,6 +31,9 @@ class CartService:
             )
 
             cart = CartRepository.get_by_user(user)
+
+        if not cart and session_key:
+            cart = CartRepository.get_by_session_key(session_key)
 
         # attach user to cart
         if user and not cart.user:  # type: ignore

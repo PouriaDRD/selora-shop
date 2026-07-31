@@ -54,11 +54,11 @@ export function useRegisterForm({ onSuccess }: Props) {
 				type: "rfs",
 			}),
 
+			refetchUser(),
+
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.cart.cart,
 			}),
-
-			refetchUser(),
 		]);
 
 		toast.success("حساب کاربری با موفقیت ایجاد شد!");

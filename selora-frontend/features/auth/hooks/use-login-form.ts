@@ -52,11 +52,11 @@ export function useLoginForm({ onSuccess }: Props) {
 				type: "rfs",
 			}),
 
+			refetchUser(),
+
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.cart.cart,
 			}),
-
-			refetchUser(),
 		]);
 		toast.success("ورود موفقیت آمیز  بود!");
 
