@@ -69,6 +69,7 @@ REST_FRAMEWORK = {
         "anon": "60/minute",
         "user": "120/minute",
         "login": "5/minute",
+        "logout": "5/minute",
         "register": "5/minute",
         "refresh-token": "5/minute",
     },

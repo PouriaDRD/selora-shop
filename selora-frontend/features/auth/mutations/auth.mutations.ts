@@ -18,6 +18,12 @@ export function useRegister() {
 	});
 }
 
+export function useLogoutMutation() {
+	return useMutation({
+		mutationFn: authApi.logout,
+	});
+}
+
 export const useMyLoginHistory = () => {
 	return useQuery({
 		queryKey: queryKeys.auth.history,

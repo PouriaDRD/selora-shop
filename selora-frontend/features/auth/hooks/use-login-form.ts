@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { queryClient, queryKeys } from "@/features/api/lib";
 import { useUser } from "@/features/user/context";
 
 import { createSession } from "../actions";
@@ -50,6 +51,11 @@ export function useLoginForm({ onSuccess }: Props) {
 				expireTimeUtc: data.refresh_expires_at,
 				type: "rfs",
 			}),
+
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.cart.cart,
+			}),
+
 			refetchUser(),
 		]);
 		toast.success("ورود موفقیت آمیز  بود!");

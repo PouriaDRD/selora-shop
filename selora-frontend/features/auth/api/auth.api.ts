@@ -18,6 +18,12 @@ export const authApi = {
 		return apiClient.post<LoginResponse>(endpoints.auth.login, data);
 	},
 
+	logout: ({ refresh }: { refresh: string }) => {
+		return apiClient.post(endpoints.auth.logout, {
+			refresh: refresh,
+		});
+	},
+
 	register: (data: RegisterFormValues) => {
 		return apiClient.post<RegisterResponse>(endpoints.auth.register, data);
 	},

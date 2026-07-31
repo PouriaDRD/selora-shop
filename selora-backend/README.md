@@ -14,8 +14,8 @@ This backend provides a modular API layer for:
 
 ## Tech Stack
 
-- Python 3.11+
-- Django 6
+- Python 3.13+
+- Django 6+
 - Django REST Framework
 - Simple JWT
 - drf-spectacular for API schema documentation

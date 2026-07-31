@@ -30,7 +30,6 @@ class ApiClient {
 		} = props;
 
 		const controller = new AbortController();
-
 		const timer = setTimeout(() => controller.abort(), timeout);
 
 		try {
@@ -43,7 +42,7 @@ class ApiClient {
 			const token = await this.getToken();
 
 			if (token) {
-				(headers as Record<string, string>)["Authorization"] =
+				(headers as Record<string, string>).Authorization =
 					`Bearer ${token}`;
 			}
 
@@ -75,7 +74,7 @@ class ApiClient {
 			}
 
 			/**
-			 * Refresh token
+			 * Refresh access token
 			 */
 			if (response.status === 401 && retry) {
 				const refreshed = await this.refreshToken();
@@ -88,9 +87,7 @@ class ApiClient {
 				}
 			}
 
-			const json = await response.json();
-
-			return json as ApiResponse<T>;
+			return this.parseResponse<T>(response);
 		} catch (error: unknown) {
 			clearTimeout(timer);
 
@@ -183,9 +180,7 @@ class ApiClient {
 	// =========================
 
 	private async getToken() {
-		const token = await getSession();
-
-		return token ?? null;
+		return (await getSession()) ?? null;
 	}
 
 	private async refreshToken() {
@@ -213,6 +208,36 @@ class ApiClient {
 
 		return JSON.stringify(body);
 	}
+
+	// =========================
+	// RESPONSE
+	// =========================
+
+	private async parseResponse<T>(
+		response: Response,
+	): Promise<ApiResponse<T>> {
+		const text = await response.text();
+
+		if (!text) {
+			return {
+				status: response.ok,
+				message: "",
+				data: [],
+				errors: null,
+			} as ApiResponse<T>;
+		}
+
+		try {
+			return JSON.parse(text) as ApiResponse<T>;
+		} catch {
+			return {
+				status: false,
+				message: "پاسخ نامعتبر از سرور",
+				data: [],
+				errors: text,
+			};
+		}
+	}
 }
 
 export const apiClient = new ApiClient();
@@ -222,9 +247,7 @@ export function buildApiUrl(
 	params?: Record<string, string | number | boolean | undefined>,
 ) {
 	const base = BASE_URL.replace(/\/+$/, "");
-
 	const cleanPath = path.replace(/^\/+/, "").replace(/\/+$/, "");
-
 	const isAbsolute = /^https?:\/\//i.test(path);
 
 	const url = isAbsolute

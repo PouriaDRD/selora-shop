@@ -4,6 +4,13 @@ import { cookies } from "next/headers";
 
 import { buildApiUrl, endpoints } from "@/features/api/lib";
 
+const ACCESS_TOKEN_COOKIE_NAME = "acs";
+const REFRESH_TOKEN_COOKIE_NAME = "rfs";
+const CSRF_TOKEN_COOKIE_NAME = "csrftoken";
+
+type TokenType =
+	| typeof ACCESS_TOKEN_COOKIE_NAME
+	| typeof REFRESH_TOKEN_COOKIE_NAME;
 // ============================
 // Helpers
 // ============================
@@ -21,7 +28,7 @@ function calculateMaxAgeFromUtc(expireTimeUtc: Date): number {
 // ============================
 interface CreateSessionProps {
 	token: string;
-	type: "acs" | "rfs";
+	type: TokenType;
 	expireTimeUtc: Date;
 }
 /**
@@ -60,7 +67,7 @@ export async function getSession(): Promise<string | null> {
 
 		const cookieStore = await cookies();
 
-		let session = cookieStore.get("acs")?.value ?? null;
+		let session = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value ?? null;
 
 		if (!session) {
 			session = await refreshAccessToken();
@@ -74,15 +81,41 @@ export async function getSession(): Promise<string | null> {
 	}
 }
 
+export async function getAccessToken(): Promise<string | null> {
+	try {
+		const cookieStore = await cookies();
+
+		return cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value ?? null;
+	} catch (error) {
+		if (process.env.NODE_ENV === "development") {
+			console.error("[getAccessToken]", error);
+		}
+		return null;
+	}
+}
+
+export async function getRefreshToken(): Promise<string | null> {
+	try {
+		const cookieStore = await cookies();
+
+		return cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value ?? null;
+	} catch (error) {
+		if (process.env.NODE_ENV === "development") {
+			console.error("[getRefreshToken]", error);
+		}
+		return null;
+	}
+}
+
 /**
  * Clear session cookies
  */
 export async function clearSession(): Promise<void> {
 	const cookieStore = await cookies();
 
-	cookieStore.delete("acs");
-	cookieStore.delete("rfs");
-	cookieStore.delete("csrftoken");
+	cookieStore.delete(ACCESS_TOKEN_COOKIE_NAME);
+	cookieStore.delete(REFRESH_TOKEN_COOKIE_NAME);
+	cookieStore.delete(CSRF_TOKEN_COOKIE_NAME);
 }
 
 /**
@@ -92,7 +125,7 @@ export async function refreshAccessToken(): Promise<string | null> {
 	try {
 		const cookieStore = await cookies();
 
-		const refreshToken = cookieStore.get("rfs")?.value;
+		const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
 
 		if (!refreshToken) {
 			await clearSession();
