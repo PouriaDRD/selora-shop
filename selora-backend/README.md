@@ -164,6 +164,10 @@ CORS_ALLOW_CREDENTIALS="True"
 CORS_ALLOWED_ORIGINS="http://localhost:3000,http://127.0.0.1:3000,http://192.168.1.2:3000"
 
 CSRF_TRUSTED_ORIGINS="http://localhost:3000,http://127.0.0.1:3000,http://192.168.1.2:3000"
+
+# Django Superuser settings, required for Docker deployments
+DJANGO_SUPERUSER_USERNAME="admin"
+DJANGO_SUPERUSER_PASSWORD="admin"
 ```
 
 ### Key variables

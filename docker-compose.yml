@@ -1,12 +1,34 @@
 services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: selora-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: selora_shop
+      POSTGRES_USER: selora
+      POSTGRES_PASSWORD: strong_password_123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   backend:
     build:
       context: ./selora-backend
     container_name: selora-backend
+
     ports:
       - "8000:8000"
+
+    depends_on:
+      - postgres
+
     environment:
       DEBUG: "True"
+
       BASE_URL: "api/"
       ADMIN_URL: "admin/"
       SECRET_KEY: "docker-secret-key"
@@ -19,14 +41,16 @@ services:
       ACCESS_TOKEN_LIFETIME: "60"
       REFRESH_TOKEN_LIFETIME: "7"
 
-      USE_SQLITE: "True"
+      USE_SQLITE: "False"
+
       DB_NAME: "selora_shop"
-      DB_USER: "user"
+      DB_USER: "selora"
       DB_PASSWORD: "strong_password_123"
-      DB_HOST: "localhost"
+      DB_HOST: "postgres"
       DB_PORT: "5432"
 
       INTERNAL_IPS: "localhost,127.0.0.1,172.18.0.1"
+
       ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0"
 
       CORS_ALLOW_CREDENTIALS: "True"
@@ -51,6 +75,10 @@ services:
     build:
       context: ./selora-frontend
     container_name: selora-frontend
+
+    depends_on:
+      - backend
+
     ports:
       - "3000:3000"
 
@@ -63,5 +91,5 @@ services:
       - ./selora-frontend:/app
       - /app/node_modules
 
-    depends_on:
-      - backend
+volumes:
+  postgres_data:
