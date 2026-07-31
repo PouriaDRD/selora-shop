@@ -35,8 +35,17 @@ python -m venv .venv
 pip install -r requirements.txt
 copy .env.example .env
 python manage.py migrate
+python manage.py seed_data       # populates demo categories/products/variants/images
+python manage.py createsuperuser # to access /admin/
 python manage.py runserver
 ```
+
+To reset and re-seed demo data at any point:
+
+```bash
+python manage.py seed_data --flush
+```
+
 
 ### Frontend
 

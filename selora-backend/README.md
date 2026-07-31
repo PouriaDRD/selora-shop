@@ -217,8 +217,15 @@ python manage.py test
 ```bash
 python manage.py makemigrations
 python manage.py migrate
+python manage.py seed_data       # populates demo categories/products/variants/images
 python manage.py createsuperuser
 python manage.py shell
+```
+
+To reset and re-seed demo data at any point:
+
+```bash
+python manage.py seed_data --flush
 ```
 
 ## Notes
