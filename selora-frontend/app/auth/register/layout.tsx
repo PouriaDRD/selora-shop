@@ -2,6 +2,8 @@ import { Fragment, PropsWithChildren } from "react";
 
 import { Metadata } from "next";
 
+import { Header } from "@/components/layouts";
+
 export async function generateMetadata(): Promise<Metadata> {
 	return {
 		title: "ثبت نام",
@@ -10,7 +12,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function RegisterLayout({ children }: Readonly<PropsWithChildren>) {
-	return <Fragment>{children}</Fragment>;
+	return (
+		<Fragment>
+			<Header />
+			{children}
+		</Fragment>
+	);
 }
 
 export default RegisterLayout;
